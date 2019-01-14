@@ -13,6 +13,8 @@ class TaskList {
       this.tasks.list.forEach((task) => {
         this.displayTask(task);
       });
+      // sort list by last started
+      // todo
     }
   }
 
@@ -26,7 +28,6 @@ class TaskList {
         nameExists = true;
       }
     });
-
     if (nameExists === true) {
       alert('A task already exists with that name.');
       return;
@@ -64,11 +65,10 @@ class TaskList {
   }
 
   displayTask(task) {
-    // Get our container dive to append a new row to
-    const UItaskList = document.getElementById('task-list');
     // create our new row
     const newRow = document.createElement('div');
-    newRow.classList = 'row'
+    newRow.classList = 'row p-2'
+    newRow.id = `row-task-${task.id}`;
 
     // add columns to our new row
     this.createCol(newRow, task.id);
@@ -76,29 +76,28 @@ class TaskList {
     this.createCol(newRow, task.duration);
     this.createCol(newRow, (task.started === null ? '' : task.started));
 
-    // Add the new LI
-    UItaskList.appendChild(newRow);
+    // add the new row
+    const taskList = document.getElementById('task-list');
+    const rowHeader = document.getElementById('row-header');    
+    taskList.insertBefore(newRow, rowHeader.nextElementSibling);
   }
 
-  startTask() {
+  startTask(newId) {
+    this.tasks.currentTaskId = newId;
+    document.getElementById(`row-task-${newId}`).classList.add('bg-success');
+  }
+
+  stopCurrentTask() {
+
+    if (this.currentTaskId !== null) {
+      this.tasks.currentTaskId = null;
+    }
 
   }
 
   storeTasks() {
     window.localStorage.setItem('tasks', JSON.stringify(this.tasks));
     console.log('stored: ' + JSON.stringify(this.tasks));
-  }
-
-  stopCurrentTask() {
-
-    if (this.currentTaskId !== null) {
-      /*
-      this.tasks.forEach(function(task) {
-        console.log(task);
-      }
-      */
-    }
-
   }
 
 }
