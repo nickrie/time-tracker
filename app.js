@@ -8,6 +8,12 @@ document.getElementById('btn-new-task').addEventListener('click', (e) => {
   addTask(document.getElementById('new-task').value);
 });
 
+// Every 10 seconds update Last Active
+lastActiveRefresh = 10000;
+setTimeout(() => {
+  taskList.updateLastActive();
+}, lastActiveRefresh);
+
 function addTask(name) {
   // Clear the input
   document.getElementById('new-task').value = '';

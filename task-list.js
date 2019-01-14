@@ -1,7 +1,7 @@
 class TaskList {
 
   constructor() {
-    
+
     // Get Tasks from LS
     if (window.localStorage.getItem('tasks') === null) {
       this.tasks = {
@@ -151,6 +151,30 @@ class TaskList {
     window.localStorage.setItem('tasks', JSON.stringify(this.tasks));
     console.log('stored: ' + JSON.stringify(this.tasks));
 
+  }
+
+  updateLastActive() {
+
+    for (let taskId in this.tasks.list) {
+      let last;
+      let task = this.tasks.list[taskId];
+      if (task.id == this.tasks.currentTaskId) {
+        last = 'ACTIVE';
+      }
+      else {
+        let lastMoment = moment(task.last);
+        last = lastMoment.from(new Date());
+      }
+      document.getElementById(`col-task-last-${task.id}`).innerHTML = last;
+    }
+    
+    console.log('updateLastActive ran');
+
+    // run this again in 10 seconds
+    setTimeout(() => {
+      taskList.updateLastActive();
+    }, lastActiveRefresh);
+    
   }
 
 }
