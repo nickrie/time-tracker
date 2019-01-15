@@ -46,31 +46,52 @@ class Tasks {
     };
     this.tasks.list[newId] = newTask;
 
-    // Start the new task and store it
-    this.startTask(newId);
-
-    // Add task to UI
+    // Add task to UI (we must add before starting it since start updates the UI)
     UI.displayTask(newTask);
+
+    // Start the new task and Store it
+    this.startTask(newId);
 
   }
 
-  startTask(newId) {
+  startTask(taskId) {
+
+    // This is by reference so we can update task and changes will get stored
+    const task = this.tasks.list[taskId];
+
+    // Ensure this task is not already active
+    if (task.started !== null) {
+      alert('This task is already active.');
+      return;
+    }
 
     // Stop currently running task
     if (this.tasks.currentTaskId !== null) {
-      this.stopTask(this.tasks.list[this.tasks.currentTaskId]);
+      this.stopTask(this.tasks.currentTaskId);
     }
     // Start this task
-    this.tasks.currentTaskId = newId;
+    this.tasks.currentTaskId = taskId;
     // Set started Date
-    this.tasks.list[newId].started = new Date();
+    task.started = new Date();
+
+    // Update the UI
+    UI.taskChanged(task);
 
     // Store tasks
     this.storeTasks();
 
   }
 
-  stopTask(task) {
+  stopTask(taskId) {
+
+    // This is by reference so we can update task and changes will get stored
+    const task = this.tasks.list[taskId];
+
+    // Ensure this task is actually active
+    if (task.started === null) {
+      alert(`"This task is not currently active.`);
+      return;
+    }
 
     // Update logged minutes
     let a = moment(new Date());
@@ -85,10 +106,11 @@ class Tasks {
     // Update last date
     task.last = new Date();
 
-    UI.taskChanged(task, 'STOPPED');
-
-    // clear currentTaskId
+    // Clear currentTaskId
     this.tasks.currentTaskId = null;
+
+    // Update the UI
+    UI.taskChanged(task, 'STOPPED');
 
     // Store tasks
     this.storeTasks();
@@ -101,17 +123,17 @@ class Tasks {
 
   }
 
-  updateLastActive() {
+  refreshLastActive() {
 
     for (let taskId in this.tasks.list) {
-      UI.updateLastActive(this.tasks.list[taskId])
+      UI.refreshLastActive(this.tasks.list[taskId])
     }
 
-    console.log('updateLastActive ran');
+    console.log('refreshLastActive ran');
 
     // run this again in lastActiveRefresh
     setTimeout(() => {
-      this.updateLastActive();
+      this.refreshLastActive();
     }, lastActiveRefresh);
 
   }

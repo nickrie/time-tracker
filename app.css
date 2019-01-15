@@ -1,0 +1,10 @@
+.fa-stop {
+  color: red;
+}
+.fa-stop:hover {
+  color: black;
+}
+
+.fa-play:hover {
+  color: black;
+}

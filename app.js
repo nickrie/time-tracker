@@ -1,4 +1,4 @@
-// TaskList
+// Tasks
 const tasks = new Tasks();
 
 // Focus the New Task input
@@ -9,10 +9,10 @@ document.getElementById('btn-new-task').addEventListener('click', (e) => {
   addTask(document.getElementById('new-task').value);
 });
 
-// update Last Active in lastActiveRefresh
+// refresh Last Active occationally
 lastActiveRefresh = 20000; // 20 seconds
 setTimeout(() => {
-  tasks.updateLastActive();
+  tasks.refreshLastActive();
 }, lastActiveRefresh);
 
 function addTask(name) {
@@ -23,4 +23,12 @@ function addTask(name) {
   // add the new task (this will also stop any previous task and start the new one)
   tasks.addTask(name);
 
+}
+
+function startTask(taskId) {
+  tasks.startTask(taskId);
+}
+
+function stopTask(taskId) {
+  tasks.stopTask(taskId);
 }
