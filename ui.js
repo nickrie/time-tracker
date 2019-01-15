@@ -16,6 +16,23 @@ class UI {
 
   }
 
+  static getLoggedTimeStr(minutes) {
+
+    let hours = 0;
+    let remainMinutes = 0;
+
+    if (minutes > 60) {
+      hours = Math.floor(minutes / 60);
+      remainMinutes = minutes % 60;
+    }
+    else {
+      remainMinutes = minutes
+    }
+
+    return (hours > 0 ? `${hours}h ` : '') + `${remainMinutes}m`;
+
+  }
+
   static createCol(row, id, width, desc, value) {
 
     const newCol = document.createElement('div');
@@ -61,7 +78,7 @@ class UI {
     UI.refreshLastActive(task);
 
     // update Time Logged
-    document.getElementById(`col-task-logged-${task.id}`).innerHTML = task.logged;
+    document.getElementById(`col-task-logged-${task.id}`).innerHTML = UI.getLoggedTimeStr(task.logged);
 
     // set ACTIVE style
     if (task.started !== null) {

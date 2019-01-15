@@ -99,6 +99,7 @@ class Tasks {
     let seconds = a.diff(b, 'seconds');
     let minutes = Math.ceil(seconds / 60);
     task.logged = minutes;
+    // task.logged += 60; // for testing
 
     // Clear started date
     task.started = null;
