@@ -46,11 +46,8 @@ class Tasks {
     };
     this.tasks.list[newId] = newTask;
 
-    // Start the new task automatically
+    // Start the new task and store it
     this.startTask(newId);
-
-    // Store tasks
-    this.storeTasks();
 
     // Add task to UI
     UI.displayTask(newTask);
@@ -60,49 +57,47 @@ class Tasks {
   startTask(newId) {
 
     // Stop currently running task
-    this.stopCurrentTask();
+    if (this.tasks.currentTaskId !== null) {
+      this.stopTask(this.tasks.list[this.tasks.currentTaskId]);
+    }
     // Start this task
     this.tasks.currentTaskId = newId;
     // Set started Date
     this.tasks.list[newId].started = new Date();
 
+    // Store tasks
+    this.storeTasks();
+
   }
 
-  stopCurrentTask() {
+  stopTask(task) {
 
-    const currentId = this.tasks.currentTaskId;
-    let currentTask = null;
+    // Update logged minutes
+    let a = moment(new Date());
+    let b = moment(task.started);
+    let seconds = a.diff(b, 'seconds');
+    let minutes = Math.ceil(seconds / 60);
+    task.logged = minutes;
 
-    if (currentId != null) {
+    // Clear started date
+    task.started = null;
 
-      currentTask = this.tasks.list[currentId];
+    // Update last date
+    task.last = new Date();
 
-      // Update logged minutes
-      let a = moment(new Date());
-      let b = moment(currentTask.started);
-      let seconds = a.diff(b, 'seconds');
-      let minutes = Math.ceil(seconds / 60);
-      currentTask.logged = minutes;
-
-      // Clear started date
-      currentTask.started = null;
-
-      // Update last date
-      currentTask.last = new Date();
-
-      UI.taskChanged(currentTask, 'STOPPED');
-
-    }
+    UI.taskChanged(task, 'STOPPED');
 
     // clear currentTaskId
     this.tasks.currentTaskId = null;
+
+    // Store tasks
+    this.storeTasks();
 
   }
 
   storeTasks() {
 
     window.localStorage.setItem('tasks', JSON.stringify(this.tasks));
-    console.log('stored: ' + JSON.stringify(this.tasks));
 
   }
 
