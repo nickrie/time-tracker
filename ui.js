@@ -5,11 +5,10 @@ class UI {
     let lastActive;
 
     if (task.started !== null) {
-      lastActive = 'ACTIVE';
+      lastActive = 'ACTIVE for ' + moment(task.started).toNow(true);
     }
     else {
-      let lastMoment = moment(task.last);
-      lastActive = lastMoment.from(new Date());
+      lastActive = moment(task.last).from(new Date());
     }
 
     return lastActive;
