@@ -1,17 +1,15 @@
 // Tasks
 const tasks = new Tasks();
+// Display existing tasks
+for (let taskId in tasks.tasks.list) {
+  UI.displayTask(tasks.tasks.list[taskId]);
+}
 
 // Focus the New Task input
 document.getElementById('input-task-name').focus();
 
 // Hide the edit buttons
 document.querySelector('#btns-edit').style.display = 'none';
-
-// Refresh Last Active occationally
-lastActiveRefresh = 20000; // 20 seconds
-setTimeout(() => {
-  tasks.refreshLastActive();
-}, lastActiveRefresh);
 
 /////////////////////////
 // Event Listeners
@@ -43,7 +41,7 @@ document.querySelector('#task-list').addEventListener('click', (e) => {
     const taskId = UI.parentRowTaskId(e.target);
 
     // toggle the task
-    UI.toggleTask(taskId);
+    toggleTask(taskId);
     // hide icon after they click
     document.querySelector(`#col-task-link-${taskId} > .icon`).innerHTML = '';
 
@@ -67,7 +65,7 @@ document.getElementById('btn-add-task').addEventListener('click', (e) => {
 
 // Button: Cancel
 document.querySelector('#btn-cancel').addEventListener('click', (e) => {
-  UI.cancelEditTask();
+  UI.clearEditTask();
 });
 
 // Button: Delete
@@ -89,10 +87,20 @@ function addTask(name, hours, minutes) {
   // Clear the inputs
   UI.clearInputs();
 
-  // add the new task (this will also stop any previous task and start the new one)
+  // Add the new task (this will also stop any previous task and start the new one)
   hours = (hours === null || hours == '' ? 0 : hours);
   minutes = (minutes === null || minutes == '' ? 0 : minutes);
-  tasks.addTask(name, hours, minutes);
+  result = tasks.addTask(name, hours, minutes);
+
+  if (!result.error) {
+    // Add task to UI (we must add before starting it since start updates the UI)
+    UI.displayTask(tasks.getTask(result.id));
+    // Start the new task
+    startTask(result.id);
+  }
+  else {
+    UI.alert(result.msg);
+  }
 
 }
 
@@ -102,10 +110,68 @@ function editTask(taskId) {
 
 function deleteTask(taskId) {
   if (confirm('Are you sure you want to delete this task?')) {
+    // Delete the task
     tasks.deleteTask(taskId);
+    // Remove the task from the UI
+    UI.removeTask(taskId);
+    // Hide the edit screen
+    UI.clearEditTask();
   }
 }
 
 function toggleTask(taskId) {
-  tasks.toggleTask(taskId);
+
+  const result = tasks.toggleTask(taskId);
+  
+  if (!result.error) {
+    // Update the UI
+    UI.taskChanged(tasks.getTask(taskId));
+    if (typeof result.stoppedId !== 'undefined' && result.stoppedId !== null) {
+      UI.taskChanged(tasks.getTask(result.stoppedId));
+    }
+  }
+  else {
+    UI.alert(result.error);
+  }
+
 }
+
+function startTask(taskId) {
+
+  const result = tasks.startTask(taskId);
+  // console.log(`STARTED ${taskId}, stoppedId = ${stoppedId}`);
+
+  if (!result.error) {
+    // Update the UI
+    UI.taskChanged(tasks.getTask(taskId));
+    if (typeof result.stoppedId !== 'undefined' && result.stoppedId !== null) {
+      UI.taskChanged(tasks.getTask(result.stoppedId));
+    }
+  }
+  else {
+    UI.alert(result.msg);
+  }
+
+}
+
+function refreshLastActive() {
+
+  for (let taskId in tasks.tasks.list) {
+    UI.refreshLastActive(tasks.tasks.list[taskId])
+  }
+
+  // run this again in lastActiveRefresh
+  setTimeout(() => {
+    refreshLastActive();
+  }, lastActiveRefresh);
+
+  console.log('refreshLastActive ran');
+
+}
+
+// Refresh Last Active occationally to get updated time values
+lastActiveRefresh = 20000; // 20 seconds
+setTimeout(() => {
+  refreshLastActive();
+}, lastActiveRefresh);
+

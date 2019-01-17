@@ -2,7 +2,7 @@ class UI {
 
   static alert(msg) {
     // TODO: convert to a bootstrap modal
-    alert('msg');
+    alert(msg);
   }
 
   static clearInputs() {
@@ -141,13 +141,13 @@ class UI {
 
   }
 
-  static cancelEditTask() {
+  static clearEditTask() {
 
     UI.clearInputs();
 
-      // Hide the edit buttons and show the add buttons
-      document.querySelector('#btn-add-task').style.display = 'block';
-      document.querySelector('#btns-edit').style.display = 'none';
+    // Hide the edit buttons and show the add buttons
+    document.querySelector('#btn-add-task').style.display = 'block';
+    document.querySelector('#btns-edit').style.display = 'none';
     
   }
 
@@ -159,12 +159,9 @@ class UI {
     document.getElementById(`col-task-last-active-${task.id}`).innerHTML = UI.getLastActiveStr(task);
   }
 
-  static toggleTask(taskId) {
-    // call thet app.js level function to toggle
-    toggleTask(taskId);
-  }
+  static taskChanged(task) {
 
-  static taskChanged(task, which = false) {
+    // console.log('taskChanged(' + task.id + ')');
 
     // update Last Active
     UI.refreshLastActive(task);
@@ -178,13 +175,13 @@ class UI {
       document.getElementById(`row-task-${task.id}`).classList.add('bg-success');
     }
 
-    // if the task was stopped, indicate the change by setting the background color to red for 3 seconds
-    if (which == 'STOPPED') {
+    // if the task was stopped, indicate the change by setting the background color to red temporarily
+    if (task.started === null && document.getElementById(`row-task-${task.id}`).classList.contains('bg-success')) {
       document.getElementById(`row-task-${task.id}`).classList.remove('bg-success');
       document.getElementById(`row-task-${task.id}`).classList.add('bg-danger');
       setTimeout(() => {
         document.getElementById(`row-task-${task.id}`).classList.remove('bg-danger');
-      }, 3000)
+      }, 1000)
     }
 
   }

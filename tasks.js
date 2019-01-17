@@ -11,15 +11,13 @@ class Tasks {
       };
     } else {
       this.tasks = JSON.parse(window.localStorage.getItem('tasks'));
-      for (let taskId in this.tasks.list) {
-        UI.displayTask(this.tasks.list[taskId]);
-      }
-      // sort list by last
-      // todo
     }
 
   }
 
+  // Adds a new task an object with either 
+  //    {error: true, msg: ''} or
+  //    {error: false, id: }
   addTask(name, hours, minutes) {
 
     let nameExists = false;
@@ -31,17 +29,14 @@ class Tasks {
       }
     }
     if (nameExists === true) {
-      UI.alert('A task already exists with that name.');
-      return;
+      return {error: true, msg: 'A task already exists with that name.'};
     }
 
     // Ensure hours and minutes are positive values
-    console.log(`hours = ${hours}, minutes = ${minutes}`);
     hours = parseInt(hours);
     minutes = parseInt(minutes);
     if (hours < 0 || minutes < 0) {
-      UI.alert('Hours and minutes must be positive integer values.');
-      return;
+      return {error: true, msg: 'Hours and minutes must be positive integer values.'};
     }
 
     // Add new task
@@ -55,11 +50,10 @@ class Tasks {
     };
     this.tasks.list[newId] = newTask;
 
-    // Add task to UI (we must add before starting it since start updates the UI)
-    UI.displayTask(newTask);
+    // Store tasks
+    this.storeTasks();
 
-    // Start the new task and Store it
-    this.startTask(newId);
+    return {error: false, id: newId};
 
   }
 
@@ -73,63 +67,77 @@ class Tasks {
     // Delete the task
     delete this.tasks.list[taskId];
 
-    // Remove the task from the UI
-    UI.removeTask(taskId);
-
-    // Hide the edit screen
-    UI.cancelEditTask();
-
     // Store tasks
     this.storeTasks();
 
+  }
+
+  getTasks() {
+    return this.tasks;
   }
 
   getTask(taskId) {
     return this.tasks.list[taskId];
   }
 
+  /*
   setTask(task) {
     this.tasks.list[taskId] = task;
     this.storeTasks();
   }
+  */
 
+  // Starts a task, if it has to stop a currently running task it will return the stopped task's id
+  // Object returned will be
+  //    {error: true, msg: ''} or
+  //    {error: false, stoppedId: }
   startTask(taskId) {
+
+    let stoppedId = null;
+
+    // console.log('START ' + taskId);
 
     // This is by reference so we can update task and changes will get stored when we call storeTasks
     const task = this.tasks.list[taskId];
 
     // Ensure this task is not already active
     if (task.started !== null) {
-      UI.alert('This task is already active.');
-      return;
+      return {error: true, msg: 'This task is already active.'};
     }
 
     // Stop currently running task
     if (this.tasks.currentTaskId !== null) {
-      this.stopTask(this.tasks.currentTaskId);
+      stoppedId = this.tasks.currentTaskId;
+      const result = this.stopTask(this.tasks.currentTaskId);
+      if (result.error) {
+        return result;
+      }
     }
     // Start this task
     this.tasks.currentTaskId = taskId;
     // Set started Date
     task.started = new Date();
 
-    // Update the UI
-    UI.taskChanged(task);
-
     // Store tasks
     this.storeTasks();
 
+    return {error: false, stoppedId: stoppedId};
+
   }
 
+  // Stops and task and returns an object
+  //    {error: true, msg: ''} or
+  //    {error: false }
   stopTask(taskId) {
+
+    // console.log('STOP ' + taskId);
 
     // This is by reference so we can update task and changes will get stored
     const task = this.tasks.list[taskId];
 
     // Ensure this task is actually active
     if (task.started === null) {
-      UI.alert(`"This task is not currently active.`);
-      return;
+      return {error: true, msg: 'This task is not currently active.'};
     }
 
     // Update logged minutes
@@ -148,11 +156,10 @@ class Tasks {
     // Clear currentTaskId
     this.tasks.currentTaskId = null;
 
-    // Update the UI
-    UI.taskChanged(task, 'STOPPED');
-
     // Store tasks
     this.storeTasks();
+
+    return {error: false};
 
   }
 
@@ -162,31 +169,19 @@ class Tasks {
 
   }
 
+  // starts/stops a task depending on it's current state
+  // if another task is stopped due to the toggle it's id is returned
+  // via the the object returned by startTask()
   toggleTask(taskId) {
 
     const task = this.tasks.list[taskId];
 
     if (task.started === null) {
-      this.startTask(task.id);
+      return this.startTask(task.id);
     }
     else {
-      this.stopTask(task.id);
+      return this.stopTask(task.id);
     }
-
-  }
-
-  refreshLastActive() {
-
-    for (let taskId in this.tasks.list) {
-      UI.refreshLastActive(this.tasks.list[taskId])
-    }
-
-    console.log('refreshLastActive ran');
-
-    // run this again in lastActiveRefresh
-    setTimeout(() => {
-      this.refreshLastActive();
-    }, lastActiveRefresh);
 
   }
 
