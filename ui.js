@@ -102,23 +102,9 @@ class UI {
         </div>
     `;
 
-    // add click event handler
+    // add hover event handler
     const el = document.getElementById(newRow.id);
     const elIcon = document.querySelector(`#col-task-link-${task.id} > .icon`);
-    el.addEventListener('click', (e) => {
-      // if they clicked on the edit icon then edit the task
-      if (e.target.classList.contains('link-edit') || e.target.classList.contains('fa-pencil-alt')) {
-        editTask(task.id);
-      }
-      else {
-        // toggle the task
-        UI.toggleTask(task.id);
-        // hide icon after they click
-        elIcon.innerHTML = '';
-      }
-    });
-
-    // add hover event handler
     el.addEventListener('mouseenter', (e) => {
       if (document.getElementById(`row-task-${task.id}`).classList.contains('bg-success')) {
         elIcon.innerHTML = '<i class="fas fa-stop"></i>';
@@ -201,6 +187,17 @@ class UI {
       }, 3000)
     }
 
+  }
+
+  // Takes an event target and return the task id for the parent row
+  static parentRowTaskId(target) {
+    let el = target;
+    while (!el.classList.contains('row')) {
+      // console.log('SKIPPED ' + el.id);
+      el = el.parentNode;
+    }
+    // console.log('FOUND ' + el.id);
+    return parseInt(el.id.replace('row-task-', ''));
   }
 
 }
