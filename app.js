@@ -124,8 +124,9 @@ function toggleTask(taskId) {
   const result = tasks.toggleTask(taskId);
   
   if (!result.error) {
-    // Update the UI
+    // Update the UI for the toggled task
     UI.taskChanged(tasks.getTask(taskId));
+    // If another task was stopped due to the toggle, update it as well
     if (typeof result.stoppedId !== 'undefined' && result.stoppedId !== null) {
       UI.taskChanged(tasks.getTask(result.stoppedId));
     }
@@ -142,8 +143,9 @@ function startTask(taskId) {
   // console.log(`STARTED ${taskId}, stoppedId = ${stoppedId}`);
 
   if (!result.error) {
-    // Update the UI
+    // Update the UI for the started task
     UI.taskChanged(tasks.getTask(taskId));
+    // If another task was stopped in order to start this task, update it too
     if (typeof result.stoppedId !== 'undefined' && result.stoppedId !== null) {
       UI.taskChanged(tasks.getTask(result.stoppedId));
     }

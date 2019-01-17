@@ -125,6 +125,22 @@ class UI {
     
     const elName = document.querySelector('#input-task-name');
 
+    // Change the background color of the item being edited
+    const elRow = document.querySelector(`#row-task-${task.id}`);
+    elRow.classList.add('bg-primary');
+    elRow.classList.add('text-light');
+
+    // Change the color of the input card
+    const elCard = document.querySelector('#input-card');
+    elCard.classList.remove('bg-light');
+    elCard.classList.add('bg-primary');
+
+    // Hide all edit links
+    const elEditLinks = document.querySelectorAll('.link-edit');
+    elEditLinks.forEach((el) => {
+      el.style.display = 'none';
+    });
+
     // Hide the add button and show the edit buttons
     document.querySelector('#btn-add-task').style.display = 'none';
     document.querySelector('#btns-edit').style.display = 'inline';
@@ -143,12 +159,32 @@ class UI {
 
   static clearEditTask() {
 
-    UI.clearInputs();
+    // Revert row color changes
+    const taskId = document.querySelector('#input-task-id').value
+    const elRow = document.querySelector(`#row-task-${taskId}`);
+    if (elRow !== null) {
+      elRow.classList.remove('bg-primary');
+      elRow.classList.remove('text-light');
+    }
 
+    // Revert input card background color
+    const elCard = document.querySelector('#input-card');
+    elCard.classList.remove('bg-primary');
+    elCard.classList.add('bg-light');
+    
+    // Show all edit links
+    const elEditLinks = document.querySelectorAll('.link-edit');
+    elEditLinks.forEach((el) => {
+      el.style.display = 'block';
+    });
+    
     // Hide the edit buttons and show the add buttons
     document.querySelector('#btn-add-task').style.display = 'block';
     document.querySelector('#btns-edit').style.display = 'none';
-    
+
+    // Clear inputs
+    UI.clearInputs();
+
   }
 
   static removeTask(taskId) {
