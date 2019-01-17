@@ -43,9 +43,6 @@ class Tasks {
       UI.alert('Hours and minutes must be positive integer values.');
       return;
     }
-    else {
-      console.log(`hours = ${hours}, minutes = ${minutes}`);
-    }
 
     // Add new task
     const newId = this.tasks.idx++;
@@ -79,9 +76,21 @@ class Tasks {
     // Remove the task from the UI
     UI.removeTask(taskId);
 
+    // Hide the edit screen
+    UI.cancelEditTask();
+
     // Store tasks
     this.storeTasks();
 
+  }
+
+  getTask(taskId) {
+    return this.tasks.list[taskId];
+  }
+
+  setTask(task) {
+    this.tasks.list[taskId] = task;
+    this.storeTasks();
   }
 
   startTask(taskId) {

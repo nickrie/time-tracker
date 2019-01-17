@@ -6,6 +6,7 @@ class UI {
   }
 
   static clearInputs() {
+    document.getElementById('input-task-id').value = '';
     document.getElementById('input-task-name').value = '';
     document.getElementById('input-task-hours').value = 0;
     document.getElementById('input-task-minutes').value = 0;
@@ -31,7 +32,7 @@ class UI {
 
   }
 
-  static getLoggedTimeStr(minutes) {
+  static getHoursMinutes(minutes) {
 
     let hours = 0;
     let remainMinutes = 0;
@@ -41,10 +42,20 @@ class UI {
       remainMinutes = minutes % 60;
     }
     else {
-      remainMinutes = minutes
+      remainMinutes = minutes;
     }
 
-    return (hours > 0 ? `${hours}h ` : '') + `${remainMinutes}m`;
+    return {
+      hours: hours, 
+      minutes: remainMinutes
+    };
+  }
+
+  static getLoggedTimeStr(minutes) {
+
+    const time = UI.getHoursMinutes(minutes);
+
+    return (time.hours > 0 ? `${time.hours}h ` : '') + `${time.minutes}m`;
 
   }
 
@@ -85,19 +96,19 @@ class UI {
     // add link html
     const elLink = document.getElementById(`col-task-link-${task.id}`);
     elLink.innerHTML = `
-      <span class="icon mr-3"></span>
-      <span>
-        <i class="fas fa-trash"></i>
-      </span>
+        <div class="icon float-left"></div>
+        <div class="link-edit">
+          <i class="fas fa-pencil-alt"></i>
+        </div>
     `;
 
     // add click event handler
     const el = document.getElementById(newRow.id);
     const elIcon = document.querySelector(`#col-task-link-${task.id} > .icon`);
     el.addEventListener('click', (e) => {
-      // if they clicked on the trash icon then delete the task
-      if (e.target.classList.contains('fa-trash')) {
-        deleteTask(task.id);
+      // if they clicked on the edit icon then edit the task
+      if (e.target.classList.contains('link-edit') || e.target.classList.contains('fa-pencil-alt')) {
+        editTask(task.id);
       }
       else {
         // toggle the task
@@ -122,6 +133,36 @@ class UI {
     // call taskChanged to set the initial time values
     UI.taskChanged(task);
 
+  }
+
+  static editTask(task) {
+    
+    const elName = document.querySelector('#input-task-name');
+
+    // Hide the add button and show the edit buttons
+    document.querySelector('#btn-add-task').style.display = 'none';
+    document.querySelector('#btns-edit').style.display = 'inline';
+    // Focus the input
+    elName.focus();
+    elName.scrollTop;
+
+    // Set the values
+    document.querySelector('#input-task-id').value = task.id;
+    elName.value = task.name;
+    const time = UI.getHoursMinutes(task.logged);
+    document.querySelector('#input-task-hours').value = time.hours;
+    document.querySelector('#input-task-minutes').value = time.minutes;
+
+  }
+
+  static cancelEditTask() {
+
+    UI.clearInputs();
+
+      // Hide the edit buttons and show the add buttons
+      document.querySelector('#btn-add-task').style.display = 'block';
+      document.querySelector('#btns-edit').style.display = 'none';
+    
   }
 
   static removeTask(taskId) {

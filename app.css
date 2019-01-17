@@ -2,6 +2,13 @@
   background-color: #EEE;
 }
 
-.fa-trash:hover {
+.fa-stop {
   color: red;
+}
+.fa-play {
+  color: #18BC9C;
+}
+
+.link-edit:hover {
+  color: blue;
 }

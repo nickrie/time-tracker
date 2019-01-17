@@ -24,7 +24,7 @@
     </div>
   </div>
 
-  <div class="container card mt-3">
+  <div class="container card bg-light mt-3 mb-3">
     <div class="card-body">
 
       <form id="form-new" onsubmit="return false;" class="ml-auto my-0">
@@ -40,7 +40,8 @@
 
         <div class="row">
           <div class="form-group col-md-8">
-            <input id="input-task-name" class="form-control mr-sm-2" type="text" placeholder="Task Name">
+              <input id="input-task-id" type="hidden">
+              <input id="input-task-name" class="form-control mr-sm-2" type="text" placeholder="Task Name">
           </div>
           <div class="form-group col-md-2">
             <div class="input-group">
@@ -60,16 +61,21 @@
           </div>
         </div>
 
-        <button id="btn-add-task" class="btn btn-success my-2 my-sm-0" type="submit">Add Task</button>
+        <button id="btn-add-task" class="btn btn-primary my-2 my-sm-0">Add Task</button>
+        <span id="btns-edit">
+          <button id="btn-submit-edit" class="btn btn-success my-2 my-sm-0">Submit Changes</button>
+          <button id="btn-cancel" class="btn btn-warning my-2 my-sm-0">Cancel</button>
+          <button id="btn-delete-task" class="btn btn-danger my-2 my-sm-0">Delete Task</button>
+        </span>
       </form>
 
     </div>
   </div>
 
-  <div id="task-list" class="container pt-5">
-    <div class="row" id="row-header">
+  <div id="task-list" class="container">
+    <div class="row text-secondary" id="row-header">
       <div class="col col-6">
-        <h5>Name</h5>
+        <h5>Task Name</h5>
       </div>
       <div class="col col-3 text-right">
         <h5>Time Logged</h5>
