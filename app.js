@@ -25,10 +25,12 @@ function addTask(name) {
 
 }
 
-function startTask(taskId) {
-  tasks.startTask(taskId);
+function deleteTask(taskId) {
+  if (confirm('Are you sure you want to delete this task?')) {
+    tasks.deleteTask(taskId);
+  }
 }
 
-function stopTask(taskId) {
-  tasks.stopTask(taskId);
+function toggleTask(taskId) {
+  tasks.toggleTask(taskId);
 }

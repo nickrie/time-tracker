@@ -5,7 +5,12 @@ class UI {
     let lastActive;
 
     if (task.started !== null) {
-      lastActive = 'ACTIVE for ' + moment(task.started).toNow(true);
+      let a = moment(new Date());
+      let b = moment(task.started);
+      let seconds = a.diff(b, 'seconds');
+      let minutes = Math.ceil(seconds / 60);
+      lastActive = 'ACTIVE for ' + UI.getLoggedTimeStr(minutes);
+      // + moment(task.started).toNow(true);
     }
     else {
       lastActive = moment(task.last).from(new Date());
@@ -35,7 +40,10 @@ class UI {
   static createCol(row, id, width, desc, value) {
 
     const newCol = document.createElement('div');
-    newCol.classList = `col col-${width}`;
+    newCol.classList = `col col-${width} align-center`;
+    if (['logged', 'link'].includes(desc)) {
+      newCol.classList += ' text-right';
+    }
     newCol.id = `col-task-${desc}-${id}`;
     const newColContent = document.createTextNode(value);
     newCol.appendChild(newColContent);
@@ -47,7 +55,7 @@ class UI {
 
     // create our new row
     const newRow = document.createElement('div');
-    newRow.classList = 'row p-2'
+    newRow.classList = 'row p-2 border-top'
     newRow.id = `row-task-${task.id}`;
 
     // add columns to our new row
@@ -63,12 +71,59 @@ class UI {
     const rowHeader = document.getElementById('row-header');
     taskList.insertBefore(newRow, rowHeader.nextElementSibling);
 
+    // add link html
+    const elLink = document.getElementById(`col-task-link-${task.id}`);
+    elLink.innerHTML = `
+      <span class="icon mr-3"></span>
+      <span>
+        <i class="fas fa-trash"></i>
+      </span>
+    `;
+
+    // add click event handler
+    const el = document.getElementById(newRow.id);
+    const elIcon = document.querySelector(`#col-task-link-${task.id} > .icon`);
+    el.addEventListener('click', (e) => {
+      // if they clicked on the trash icon then delete the task
+      if (e.target.classList.contains('fa-trash')) {
+        deleteTask(task.id);
+      }
+      else {
+        // toggle the task
+        UI.toggleTask(task.id);
+        // hide icon after they click
+        elIcon.innerHTML = '';
+      }
+    });
+
+    // add hover event handler
+    el.addEventListener('mouseenter', (e) => {
+      if (document.getElementById(`row-task-${task.id}`).classList.contains('bg-success')) {
+        elIcon.innerHTML = '<i class="fas fa-stop"></i>';
+      } else {
+        elIcon.innerHTML = '<i class="fas fa-play"></i>';
+      }
+    });
+    el.addEventListener('mouseleave', (e) => {
+      elIcon.innerHTML = '';
+    });
+
+    // call taskChanged to set the initial time values
     UI.taskChanged(task);
 
   }
 
+  static removeTask(taskId) {
+    document.getElementById(`row-task-${taskId}`).remove();
+  }
+
   static refreshLastActive(task) {
     document.getElementById(`col-task-last-active-${task.id}`).innerHTML = UI.getLastActiveStr(task);
+  }
+
+  static toggleTask(taskId) {
+    // call thet app.js level function to toggle
+    toggleTask(taskId);
   }
 
   static taskChanged(task, which = false) {
@@ -83,18 +138,6 @@ class UI {
     if (task.started !== null) {
       // Add CSS to indicate the task is active
       document.getElementById(`row-task-${task.id}`).classList.add('bg-success');
-    }
-
-    // set link
-    if (task.started === null) {
-      document.getElementById(`col-task-link-${task.id}`).innerHTML = `
-        <a href="javascript:void(0);" onclick="startTask(${task.id});"><i class="fas fa-play"></i></a>
-      `;
-    }
-    else {
-      document.getElementById(`col-task-link-${task.id}`).innerHTML = `
-        <a href="javascript:void(0);" onclick="stopTask(${task.id});"><i class="fas fa-stop"></i></a>
-      `;
     }
 
     // if the task was stopped, indicate the change by setting the background color to red for 3 seconds

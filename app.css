@@ -1,10 +1,7 @@
-.fa-stop {
-  color: red;
-}
-.fa-stop:hover {
-  color: black;
+#task-list .row:hover {
+  background-color: #EEE;
 }
 
-.fa-play:hover {
-  color: black;
+.fa-trash:hover {
+  color: red;
 }

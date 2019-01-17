@@ -54,9 +54,27 @@ class Tasks {
 
   }
 
+  deleteTask(taskId) {
+
+    // If this was the currently active task, clear it
+    if (this.tasks.currentTaskId == taskId) {
+      this.tasks.currentTaskId = null;
+    }
+
+    // Delete the task
+    delete this.tasks.list[taskId];
+
+    // Remove the task from the UI
+    UI.removeTask(taskId);
+
+    // Store tasks
+    this.storeTasks();
+
+  }
+
   startTask(taskId) {
 
-    // This is by reference so we can update task and changes will get stored
+    // This is by reference so we can update task and changes will get stored when we call storeTasks
     const task = this.tasks.list[taskId];
 
     // Ensure this task is not already active
@@ -120,6 +138,19 @@ class Tasks {
   storeTasks() {
 
     window.localStorage.setItem('tasks', JSON.stringify(this.tasks));
+
+  }
+
+  toggleTask(taskId) {
+
+    const task = this.tasks.list[taskId];
+
+    if (task.started === null) {
+      this.startTask(task.id);
+    }
+    else {
+      this.stopTask(task.id);
+    }
 
   }
 
