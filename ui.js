@@ -1,5 +1,16 @@
 class UI {
 
+  static alert(msg) {
+    // TODO: convert to a bootstrap modal
+    alert('msg');
+  }
+
+  static clearInputs() {
+    document.getElementById('input-task-name').value = '';
+    document.getElementById('input-task-hours').value = 0;
+    document.getElementById('input-task-minutes').value = 0;
+  }
+
   static getLastActiveStr(task) {
 
     let lastActive;
@@ -55,7 +66,7 @@ class UI {
 
     // create our new row
     const newRow = document.createElement('div');
-    newRow.classList = 'row p-2 border-top'
+    newRow.classList = 'row p-2 border-top align-items-center';
     newRow.id = `row-task-${task.id}`;
 
     // add columns to our new row

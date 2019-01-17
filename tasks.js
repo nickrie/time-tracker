@@ -20,7 +20,7 @@ class Tasks {
 
   }
 
-  addTask(name) {
+  addTask(name, hours, minutes) {
 
     let nameExists = false;
 
@@ -31,8 +31,20 @@ class Tasks {
       }
     }
     if (nameExists === true) {
-      alert('A task already exists with that name.');
+      UI.alert('A task already exists with that name.');
       return;
+    }
+
+    // Ensure hours and minutes are positive values
+    console.log(`hours = ${hours}, minutes = ${minutes}`);
+    hours = parseInt(hours);
+    minutes = parseInt(minutes);
+    if (hours < 0 || minutes < 0) {
+      UI.alert('Hours and minutes must be positive integer values.');
+      return;
+    }
+    else {
+      console.log(`hours = ${hours}, minutes = ${minutes}`);
     }
 
     // Add new task
@@ -40,7 +52,7 @@ class Tasks {
     const newTask = {
       id: newId,
       name: name,
-      logged: 0, // minutes
+      logged: (hours * 60) + minutes,
       started: null,
       last: null
     };
@@ -79,7 +91,7 @@ class Tasks {
 
     // Ensure this task is not already active
     if (task.started !== null) {
-      alert('This task is already active.');
+      UI.alert('This task is already active.');
       return;
     }
 
@@ -107,7 +119,7 @@ class Tasks {
 
     // Ensure this task is actually active
     if (task.started === null) {
-      alert(`"This task is not currently active.`);
+      UI.alert(`"This task is not currently active.`);
       return;
     }
 
