@@ -206,6 +206,9 @@ class UI {
 
     // console.log('taskChanged(' + task.id + ')');
 
+    // update Name
+    document.getElementById(`col-task-name-${task.id}`).innerHTML = task.name;    
+
     // update Last Active
     UI.refreshLastActive(task);
 
