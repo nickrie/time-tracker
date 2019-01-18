@@ -16,34 +16,50 @@ document.querySelector('#btns-edit').style.display = 'none';
 /////////////////////////
 
 // Row click: Toggle Task
-
 document.querySelector('#task-list').addEventListener('click', (e) => {
 
   // if they clicked on the edit icon's parent div then edit the task
   //    NOTE: the parent div.link-edit exists to give the user a larger area to click for editing
   if (e.target.classList.contains('link-edit')) {
     const elId = e.target.parentNode.id;
-    const taskId = elId.replace('col-task-link-','');
+    const taskId = elId.replace('col-task-edit-icon-','');
     // console.log('1: ' + taskId);
     editTask(taskId);
   }
   // if they clicked on the edit icon then edit the task
   else if (e.target.classList.contains('fa-pencil-alt')) {
     const elId = e.target.parentNode.parentNode.id;
-    const taskId = parseInt(elId.replace('col-task-link-',''));
+    const taskId = parseInt(elId.replace('col-task-edit-icon-',''));
     // console.log('2: ' + taskId);
     editTask(taskId);
   }
   // otherwise toggle the row (start/stop)
   else {
 
+    // If they clicked the header row, return
+    elRowHeader = document.getElementById('row-header');
+    if (
+      elRowHeader == e.target
+      || elRowHeader == e.target.parentNode
+      || elRowHeader == e.target.parentNode.parentNode
+    ) {
+      // do nothing for the row header
+      return;
+    }
+
     // find the parent row
     const taskId = UI.parentRowTaskId(e.target);
 
     // toggle the task
-    toggleTask(taskId);
+    const toggleAction = toggleTask(taskId);
+    const elToggleIcon = document.querySelector(`#col-task-toggle-icon-${taskId}`);
     // hide icon after they click
-    document.querySelector(`#col-task-link-${taskId} > .icon`).innerHTML = '';
+    if (toggleAction == 'STOP') {
+      elToggleIcon.innerHTML = '<i class="fas fa-hand-paper"></i>';
+    }
+    else {
+      elToggleIcon.innerHTML = '<i class="fas fa-rocket"></i>';
+    }
 
   }
 });
@@ -75,26 +91,30 @@ document.querySelector('#btn-delete-task').addEventListener('click', (e) => {
 
 // Button: Submit Changes
 document.querySelector('#btn-submit-edit').addEventListener('click', (e) => {
-  alert('todo');
+  editTaskSubmit(
+    document.querySelector('#input-task-id').value,
+    document.getElementById('input-task-name').value,
+    document.getElementById('input-task-hours').value,
+    document.getElementById('input-task-minutes').value  
+  );
 });
 
 /////////////////////////
 // App level functions
 /////////////////////////
 
+// Add Task
 function addTask(name, hours, minutes) {
 
   // Clear the inputs
   UI.clearInputs();
 
   // Add the new task (this will also stop any previous task and start the new one)
-  hours = (hours === null || hours == '' ? 0 : hours);
-  minutes = (minutes === null || minutes == '' ? 0 : minutes);
   result = tasks.addTask(name, hours, minutes);
 
   if (!result.error) {
     // Add task to UI (we must add before starting it since start updates the UI)
-    UI.displayTask(tasks.getTask(result.id));
+    UI.displayTask(tasks.getTask(result.id), true);
     // Start the new task
     startTask(result.id);
   }
@@ -104,10 +124,30 @@ function addTask(name, hours, minutes) {
 
 }
 
+// Edit Task - alter the UI to show the edit screen
 function editTask(taskId) {
   UI.editTask(tasks.getTask(taskId));
 }
 
+// Edit Task Submit - submits the changes from the edit form
+function editTaskSubmit(id, name, hours, minutes) {
+
+  // Update the task
+  result = tasks.updateTask(id, name, hours, minutes);
+
+  if (!result.error) {
+    // Update the UI for the updated task
+    UI.taskChanged(tasks.getTask(id));
+    // Hide the edit screen
+    UI.clearEditTask();
+  }
+  else {
+    UI.alert(result.msg);
+  }
+
+}
+
+// Delete task
 function deleteTask(taskId) {
   if (confirm('Are you sure you want to delete this task?')) {
     // Delete the task
@@ -119,6 +159,7 @@ function deleteTask(taskId) {
   }
 }
 
+// Toggle (Start/Stop) a task
 function toggleTask(taskId) {
 
   const result = tasks.toggleTask(taskId);
@@ -135,8 +176,11 @@ function toggleTask(taskId) {
     UI.alert(result.error);
   }
 
+  return result.toggleAction;
+
 }
 
+// Start a task (make it active and start tracking time)
 function startTask(taskId) {
 
   const result = tasks.startTask(taskId);
@@ -156,6 +200,7 @@ function startTask(taskId) {
 
 }
 
+// Callback function to refresh the active / last active times via setTimeout
 function refreshLastActive() {
 
   for (let taskId in tasks.tasks.list) {

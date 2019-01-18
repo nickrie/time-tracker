@@ -1,3 +1,5 @@
+// UI controller class
+
 class UI {
 
   static alert(msg) {
@@ -63,7 +65,7 @@ class UI {
 
     const newCol = document.createElement('div');
     newCol.classList = `col col-${width} align-center`;
-    if (['logged', 'link'].includes(desc)) {
+    if (['logged', 'edit-icon'].includes(desc)) {
       newCol.classList += ' text-right';
     }
     newCol.id = `col-task-${desc}-${id}`;
@@ -73,47 +75,52 @@ class UI {
 
   }
 
-  static displayTask(task) {
+  static displayTask(task, justAdded = false) {
 
     // create our new row
     const newRow = document.createElement('div');
-    newRow.classList = 'row p-2 border-top align-items-center';
+    newRow.classList = 'row row-task p-2 border-top align-items-center';
     newRow.id = `row-task-${task.id}`;
 
     // add columns to our new row
     // UI.createCol(newRow, task.id, 'id', task.id);
-    UI.createCol(newRow, task.id, 6, 'name', task.name);
+    UI.createCol(newRow, task.id, 1, 'toggle-icon', '');
+    UI.createCol(newRow, task.id, 5, 'name', task.name);
     // these values will bet set when taskChanged() is called below
     UI.createCol(newRow, task.id, 3, 'logged', '');
     UI.createCol(newRow, task.id, 2, 'last-active', '');
-    UI.createCol(newRow, task.id, 1, 'link', '');
+    UI.createCol(newRow, task.id, 1, 'edit-icon', '');
 
     // add the new row
     const taskList = document.getElementById('task-list');
     const rowHeader = document.getElementById('row-header');
     taskList.insertBefore(newRow, rowHeader.nextElementSibling);
 
-    // add link html
-    const elLink = document.getElementById(`col-task-link-${task.id}`);
+    // add toggle icon
+    const elToggle = document.getElementById(`col-task-toggle-icon-${task.id}`);
+    elToggle.innerHTML = (justAdded ? '<i class="fas fa-rocket"></i>' : '');
+
+    // add edit icon html
+    // div.link-edit exists to give a larger area for the user to click
+    const elLink = document.getElementById(`col-task-edit-icon-${task.id}`);
     elLink.innerHTML = `
-        <div class="icon float-left"></div>
         <div class="link-edit">
           <i class="fas fa-pencil-alt"></i>
         </div>
     `;
 
-    // add hover event handler
+    // add toggle icon hover event handler
     const el = document.getElementById(newRow.id);
-    const elIcon = document.querySelector(`#col-task-link-${task.id} > .icon`);
+    const elToggleIcon = document.querySelector(`#col-task-toggle-icon-${task.id}`);
     el.addEventListener('mouseenter', (e) => {
       if (document.getElementById(`row-task-${task.id}`).classList.contains('bg-success')) {
-        elIcon.innerHTML = '<i class="fas fa-stop"></i>';
+        elToggleIcon.innerHTML = '<i class="fas fa-stop"></i>';
       } else {
-        elIcon.innerHTML = '<i class="fas fa-play"></i>';
+        elToggleIcon.innerHTML = '<i class="fas fa-play"></i>';
       }
     });
     el.addEventListener('mouseleave', (e) => {
-      elIcon.innerHTML = '';
+      elToggleIcon.innerHTML = '';
     });
 
     // call taskChanged to set the initial time values
@@ -215,8 +222,11 @@ class UI {
     if (task.started === null && document.getElementById(`row-task-${task.id}`).classList.contains('bg-success')) {
       document.getElementById(`row-task-${task.id}`).classList.remove('bg-success');
       document.getElementById(`row-task-${task.id}`).classList.add('bg-danger');
+      document.querySelector(`#col-task-toggle-icon-${task.id}`).innerHTML = '<i class="fas fa-hand-paper"></i>';
+      // After 1 second remove the red background and clear the icon indicating it stopped
       setTimeout(() => {
         document.getElementById(`row-task-${task.id}`).classList.remove('bg-danger');
+        document.querySelector(`#col-task-toggle-icon-${task.id}`).innerHTML = '';
       }, 1000)
     }
 

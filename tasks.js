@@ -1,3 +1,5 @@
+// Tasks controller class
+
 class Tasks {
 
   constructor() {
@@ -15,7 +17,7 @@ class Tasks {
 
   }
 
-  // Adds a new task an object with either 
+  // Adds a new task and returns an object with either 
   //    {error: true, msg: ''} or
   //    {error: false, id: }
   addTask(name, hours, minutes) {
@@ -55,6 +57,32 @@ class Tasks {
 
     return {error: false, id: newId};
 
+  }
+
+  // Updates a task and returns an object with either 
+  //    {error: true, msg: ''} or
+  //    {error: false }
+  updateTask(id, name, hours, minutes) {
+
+    // Ensure hours and minutes are positive values
+    hours = parseInt(hours);
+    minutes = parseInt(minutes);
+    if (hours < 0 || minutes < 0) {
+      return {error: true, msg: 'Hours and minutes must be positive integer values.'};
+    }
+    
+    // This is by reference so we can update task and changes will get stored when we call storeTasks
+    const task = this.tasks.list[id];
+
+    // Update values
+    task.name = name;
+    task.logged = (hours * 60) + minutes;
+    
+    // Store tasks
+    this.storeTasks();
+
+    return {error: false};
+    
   }
 
   deleteTask(taskId) {
@@ -175,13 +203,18 @@ class Tasks {
   toggleTask(taskId) {
 
     const task = this.tasks.list[taskId];
+    let result;
 
     if (task.started === null) {
-      return this.startTask(task.id);
+      result = this.startTask(task.id);
+      result.toggleAction = 'START'
     }
     else {
-      return this.stopTask(task.id);
+      result = this.stopTask(task.id);
+      result.toggleAction = 'STOP';
     }
+
+    return result;
 
   }
 
