@@ -209,7 +209,7 @@ class UI {
   }
 
   static refreshLastActive(task) {
-    document.getElementById(`col-task-last-active-${task.id}`).innerHTML = UI.getLastActiveStr(task);
+    document.getElementById(`col-task-last-active-${task.id}`).textContent = UI.getLastActiveStr(task);
   }
 
   static taskChanged(task) {
@@ -217,13 +217,13 @@ class UI {
     // console.log('taskChanged(' + task.id + ')');
 
     // update Name
-    document.getElementById(`col-task-name-${task.id}`).innerHTML = task.name;    
+    document.getElementById(`col-task-name-${task.id}`).textContent = task.name;    
 
     // update Last Active
     UI.refreshLastActive(task);
 
     // update Time Logged
-    document.getElementById(`col-task-logged-${task.id}`).innerHTML = UI.getLoggedTimeStr(task.logged);
+    document.getElementById(`col-task-logged-${task.id}`).textContent = UI.getLoggedTimeStr(task.logged);
 
     // set ACTIVE style
     if (task.started !== null) {
