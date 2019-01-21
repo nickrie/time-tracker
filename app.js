@@ -4,6 +4,7 @@ const tasks = new Tasks();
 for (let taskId in tasks.tasks.list) {
   UI.displayTask(tasks.tasks.list[taskId]);
 }
+// Show the Task List or Empty List depending on whether or not tasks exist
 UI.checkTaskListEmpty();
 
 // Focus the New Task input
@@ -58,6 +59,9 @@ document.querySelector('#task-list').addEventListener('click', (e) => {
     else {
       elToggleIcon.innerHTML = '<i class="fas fa-rocket"></i>';
     }
+
+    // Focus on the name input
+    document.querySelector('#input-task-name').focus();
 
   }
 });
@@ -180,6 +184,7 @@ function toggleTask(taskId) {
     }
   }
   else {
+    // Display the error
     UI.alert(result.error);
   }
 
@@ -191,7 +196,6 @@ function toggleTask(taskId) {
 function startTask(taskId) {
 
   const result = tasks.startTask(taskId);
-  // console.log(`STARTED ${taskId}, stoppedId = ${stoppedId}`);
 
   if (!result.error) {
     // Update the UI for the started task
@@ -202,6 +206,7 @@ function startTask(taskId) {
     }
   }
   else {
+    // Display the error
     UI.alert(result.msg);
   }
 
@@ -219,12 +224,10 @@ function refreshLastActive() {
     refreshLastActive();
   }, lastActiveRefresh);
 
-  // console.log('refreshLastActive ran');
-
 }
 
 // Refresh Last Active occationally to get updated time values
-lastActiveRefresh = 20000; // 20 seconds
+const lastActiveRefresh = 20000; // 20 seconds
 setTimeout(() => {
   refreshLastActive();
 }, lastActiveRefresh);

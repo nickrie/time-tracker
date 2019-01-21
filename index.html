@@ -6,9 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Task Tracker v1</title>
+  <!-- bootstrap included for styling -->
   <link rel="stylesheet" href="https://bootswatch.com/4/flatly/bootstrap.min.css">
+  <!-- fontawesome included for icons -->
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
     crossorigin="anonymous">
+  <!-- main app css -->
   <link rel="stylesheet" href="app.css">
 </head>
 
@@ -24,6 +27,7 @@
     </div>
   </div>
 
+  <!-- input form card -->
   <div id="input-card" class="container card bg-light mt-3 mb-3">
     <div class="card-body">
 
@@ -63,6 +67,7 @@
     </div>
   </div>
 
+  <!-- task list, hidden by default -->
   <div id="task-list" class="container" style="display: none;">
     <div class="row text-secondary" id="row-header">
       <div class="col col-1"></div>
@@ -79,6 +84,7 @@
     </div>
   </div>
 
+  <!-- empty list, hidden by default -->
   <div id="empty-list" class="container text-center text-secondary mt-5" style="display: none;">
     <h1 class="display-4">Your task list is empty.</h4>
     <p class="lead">Add a task above to get started!</p>

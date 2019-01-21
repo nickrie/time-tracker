@@ -2,11 +2,13 @@
 
 class UI {
 
+  // Show an alert message
   static alert(msg) {
-    // TODO: convert to a bootstrap modal
+    // Future: convert to a bootstrap alert to improve the look and feel of the app
     alert(msg);
   }
 
+  // Clear input fields
   static clearInputs() {
     document.getElementById('input-task-id').value = '';
     document.getElementById('input-task-name').value = '';
@@ -14,6 +16,7 @@ class UI {
     document.getElementById('input-task-minutes').value = 0;
   }
 
+  // Get the string to display for a task's Last Active time
   static getLastActiveStr(task) {
 
     let lastActive;
@@ -34,6 +37,7 @@ class UI {
 
   }
 
+  // Get the hours and minutes to display from the stored minutes value
   static getHoursMinutes(minutes) {
 
     let hours = 0;
@@ -53,6 +57,7 @@ class UI {
     };
   }
 
+  // Get the "Logged Time" string to display for a task
   static getLoggedTimeStr(minutes) {
 
     const time = UI.getHoursMinutes(minutes);
@@ -61,6 +66,8 @@ class UI {
 
   }
 
+  // Create a new column for a task
+  // Used by displayTask() to prevent duplication of code
   static createCol(row, id, width, desc, value) {
 
     const newCol = document.createElement('div');
@@ -75,6 +82,7 @@ class UI {
 
   }
 
+  // Displays a task
   static displayTask(task, justAdded = false) {
 
     // create our new row
@@ -135,6 +143,7 @@ class UI {
 
   }
 
+  // Displays the task edit form
   static editTask(task) {
     
     const elName = document.querySelector('#input-task-name');
@@ -171,6 +180,7 @@ class UI {
 
   }
 
+  // Hides the task edit form
   static clearEditTask() {
 
     // Revert row color changes
@@ -199,8 +209,12 @@ class UI {
     // Clear inputs
     UI.clearInputs();
 
+    // Focus on the name input
+    document.querySelector('#input-task-name').focus();
+
   }
 
+  // Removeds a task from the UI
   static removeTask(taskId) {
     document.getElementById(`row-task-${taskId}`).remove();
     this.numTasksDisplayed--;
@@ -208,10 +222,12 @@ class UI {
     UI.checkTaskListEmpty();
   }
 
+  // Updates the "Last Active" string for a task
   static refreshLastActive(task) {
     document.getElementById(`col-task-last-active-${task.id}`).textContent = UI.getLastActiveStr(task);
   }
 
+  // Updates task values on screen
   static taskChanged(task) {
 
     // console.log('taskChanged(' + task.id + ')');

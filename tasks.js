@@ -18,26 +18,14 @@ class Tasks {
   }
 
   // Adds a new task and returns an object with either 
-  //    {error: true, msg: ''} or
+  //    {error: true, focus: '', msg: ''} or
   //    {error: false, id: }
   addTask(name, hours, minutes) {
 
-    let nameExists = false;
-
-    // Ensure another task with that name doesn't already exist
-    for (let taskId in this.tasks.list) {
-      if (this.tasks.list[taskId].name == name) {
-        nameExists = true;
-      }
-    }
-    if (nameExists === true) {
-      return {error: true, focus: 'name', msg: 'A task already exists with that name.'};
-    }
-
-    // Ensure hours and minutes are valid
+    // Validate input values
     hours = parseInt(hours);
     minutes = parseInt(minutes);
-    const result = this.checkHoursMinutes(hours, minutes);
+    const result = this.checkInputValues(false, name, hours, minutes);
     if (result.error) {
       return result;
     }
@@ -61,14 +49,14 @@ class Tasks {
   }
 
   // Updates a task and returns an object with either 
-  //    {error: true, msg: ''} or
+  //    {error: true, focus: '', msg: ''} or
   //    {error: false }
   updateTask(id, name, hours, minutes) {
 
-    // Ensure hours and minutes are valid
+    // Validate input values
     hours = parseInt(hours);
     minutes = parseInt(minutes);
-    const result = this.checkHoursMinutes(hours, minutes);
+    const result = this.checkInputValues(id, name, hours, minutes);
     if (result.error) {
       return result;
     }
@@ -102,30 +90,19 @@ class Tasks {
 
   }
 
-  getTasks() {
-    return this.tasks;
-  }
-
+  // Returns a task object for the given id
   getTask(taskId) {
     return this.tasks.list[taskId];
   }
 
-  /*
-  setTask(task) {
-    this.tasks.list[taskId] = task;
-    this.storeTasks();
-  }
-  */
-
-  // Starts a task, if it has to stop a currently running task it will return the stopped task's id
+  // Starts a task
+  // If it has to stop a currently running task it will return the stopped task's id.
   // Object returned will be
   //    {error: true, msg: ''} or
   //    {error: false, stoppedId: }
   startTask(taskId) {
 
     let stoppedId = null;
-
-    // console.log('START ' + taskId);
 
     // This is by reference so we can update task and changes will get stored when we call storeTasks
     const task = this.tasks.list[taskId];
@@ -160,8 +137,6 @@ class Tasks {
   //    {error: false }
   stopTask(taskId) {
 
-    // console.log('STOP ' + taskId);
-
     // This is by reference so we can update task and changes will get stored
     const task = this.tasks.list[taskId];
 
@@ -193,6 +168,7 @@ class Tasks {
 
   }
 
+  // Updates the tasks object in LS
   storeTasks() {
 
     window.localStorage.setItem('tasks', JSON.stringify(this.tasks));
@@ -220,7 +196,22 @@ class Tasks {
 
   }
 
-  checkHoursMinutes(hours, minutes) {
+  checkInputValues(id, name, hours, minutes) {
+
+    // Ensure another task with that name doesn't already exist
+
+    let nameExists = false;
+
+    for (let taskId in this.tasks.list) {
+      if (this.tasks.list[taskId].name == name && taskId != id) {
+        nameExists = true;
+      }
+    }
+    if (nameExists === true) {
+      return {error: true, focus: 'name', msg: 'A task already exists with that name.'};
+    }
+
+    // Check hours and minutes to ensure they are integer values of the expected size
 
     if (hours < 0 || minutes < 0 || isNaN(hours) || isNaN(minutes)) {
       return {error: true, focus: 'hours', msg: 'Hours and minutes must be positive integer values.'};
