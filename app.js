@@ -104,20 +104,24 @@ document.querySelector('#btn-submit-edit').addEventListener('click', (e) => {
 // Add Task
 function addTask(name, hours, minutes) {
 
-  // Clear the inputs
-  UI.clearInputs();
-
   // Add the new task (this will also stop any previous task and start the new one)
   result = tasks.addTask(name, hours, minutes);
 
   if (!result.error) {
+    // Clear the inputs
+    UI.clearInputs();
     // Add task to UI (we must add before starting it since start updates the UI)
     UI.displayTask(tasks.getTask(result.id), true);
     // Start the new task
     startTask(result.id);
   }
   else {
+    // Display the error
     UI.alert(result.msg);
+    // Focus on the input with an error
+    if (typeof result.focus !== 'undefined') {
+      document.getElementById(`input-task-${result.focus}`).focus();
+    }
   }
 
 }
@@ -140,7 +144,12 @@ function editTaskSubmit(id, name, hours, minutes) {
     UI.clearEditTask();
   }
   else {
+    // Display the error
     UI.alert(result.msg);
+    // Focus on the input with an error
+    if (typeof result.focus !== 'undefined') {
+      document.getElementById(`input-task-${result.focus}`).focus();
+    }
   }
 
 }

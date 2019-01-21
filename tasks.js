@@ -31,14 +31,15 @@ class Tasks {
       }
     }
     if (nameExists === true) {
-      return {error: true, msg: 'A task already exists with that name.'};
+      return {error: true, focus: 'name', msg: 'A task already exists with that name.'};
     }
 
-    // Ensure hours and minutes are positive values
+    // Ensure hours and minutes are valid
     hours = parseInt(hours);
     minutes = parseInt(minutes);
-    if (hours < 0 || minutes < 0) {
-      return {error: true, msg: 'Hours and minutes must be positive integer values.'};
+    const result = this.checkHoursMinutes(hours, minutes);
+    if (result.error) {
+      return result;
     }
 
     // Add new task
@@ -64,11 +65,12 @@ class Tasks {
   //    {error: false }
   updateTask(id, name, hours, minutes) {
 
-    // Ensure hours and minutes are positive values
+    // Ensure hours and minutes are valid
     hours = parseInt(hours);
     minutes = parseInt(minutes);
-    if (hours < 0 || minutes < 0) {
-      return {error: true, msg: 'Hours and minutes must be positive integer values.'};
+    const result = this.checkHoursMinutes(hours, minutes);
+    if (result.error) {
+      return result;
     }
     
     // This is by reference so we can update task and changes will get stored when we call storeTasks
@@ -215,6 +217,20 @@ class Tasks {
     }
 
     return result;
+
+  }
+
+  checkHoursMinutes(hours, minutes) {
+
+    if (hours < 0 || minutes < 0 || isNaN(hours) || isNaN(minutes)) {
+      return {error: true, focus: 'hours', msg: 'Hours and minutes must be positive integer values.'};
+    }
+
+    if (minutes >= 60) {
+      return {error: true, focus: 'minutes', msg: 'Minutes must be under 60.'};
+    }
+
+    return {error: false};
 
   }
 
