@@ -126,6 +126,9 @@ class UI {
     // call taskChanged to set the initial time values
     UI.taskChanged(task);
 
+    // If the task list was empty, show it and hide the empty list message
+    UI.checkTaskListEmpty();
+
   }
 
   static editTask(task) {
@@ -196,6 +199,9 @@ class UI {
 
   static removeTask(taskId) {
     document.getElementById(`row-task-${taskId}`).remove();
+    this.numTasksDisplayed--;
+    // If this was the last item, hide the task list and show the empty list mesage
+    UI.checkTaskListEmpty();
   }
 
   static refreshLastActive(task) {
@@ -244,6 +250,18 @@ class UI {
     }
     // console.log('FOUND ' + el.id);
     return parseInt(el.id.replace('row-task-', ''));
+  }
+
+  // Show/hide the empty list message based on the # of tasks
+  static checkTaskListEmpty() {
+    if (document.querySelector('#task-list').childElementCount > 1) {
+      document.querySelector('#empty-list').style.display = 'none';
+      document.querySelector('#task-list').style.display = 'block';
+    }
+    else {
+      document.querySelector('#task-list').style.display = 'none';
+      document.querySelector('#empty-list').style.display = 'block';
+    }
   }
 
 }

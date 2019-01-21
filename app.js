@@ -4,6 +4,7 @@ const tasks = new Tasks();
 for (let taskId in tasks.tasks.list) {
   UI.displayTask(tasks.tasks.list[taskId]);
 }
+UI.checkTaskListEmpty();
 
 // Focus the New Task input
 document.getElementById('input-task-name').focus();
