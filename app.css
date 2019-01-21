@@ -9,6 +9,10 @@
   color: #18BC9C;
 }
 
-.link-edit:hover {
+.fa-pencil-alt {
+  padding: 0 10px;
+}
+.fa-pencil-alt:hover {
   color: blue;
+  padding: 0 10px;
 }

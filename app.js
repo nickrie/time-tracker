@@ -18,19 +18,10 @@ document.querySelector('#btns-edit').style.display = 'none';
 // Row click: Toggle Task
 document.querySelector('#task-list').addEventListener('click', (e) => {
 
-  // if they clicked on the edit icon's parent div then edit the task
-  //    NOTE: the parent div.link-edit exists to give the user a larger area to click for editing
-  if (e.target.classList.contains('link-edit')) {
-    const elId = e.target.parentNode.id;
-    const taskId = elId.replace('col-task-edit-icon-','');
-    // console.log('1: ' + taskId);
-    editTask(taskId);
-  }
   // if they clicked on the edit icon then edit the task
-  else if (e.target.classList.contains('fa-pencil-alt')) {
-    const elId = e.target.parentNode.parentNode.id;
+  if (e.target.classList.contains('fa-pencil-alt')) {
+    const elId = e.target.parentNode.id;
     const taskId = parseInt(elId.replace('col-task-edit-icon-',''));
-    // console.log('2: ' + taskId);
     editTask(taskId);
   }
   // otherwise toggle the row (start/stop)

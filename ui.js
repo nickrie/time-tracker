@@ -101,12 +101,9 @@ class UI {
     elToggle.innerHTML = (justAdded ? '<i class="fas fa-rocket"></i>' : '');
 
     // add edit icon html
-    // div.link-edit exists to give a larger area for the user to click
     const elLink = document.getElementById(`col-task-edit-icon-${task.id}`);
     elLink.innerHTML = `
-        <div class="link-edit">
           <i class="fas fa-pencil-alt"></i>
-        </div>
     `;
 
     // add toggle icon hover event handler
@@ -143,7 +140,7 @@ class UI {
     elCard.classList.add('bg-primary');
 
     // Hide all edit links
-    const elEditLinks = document.querySelectorAll('.link-edit');
+    const elEditLinks = document.querySelectorAll('.fa-pencil-alt');
     elEditLinks.forEach((el) => {
       el.style.display = 'none';
     });
@@ -180,7 +177,7 @@ class UI {
     elCard.classList.add('bg-light');
     
     // Show all edit links
-    const elEditLinks = document.querySelectorAll('.link-edit');
+    const elEditLinks = document.querySelectorAll('.fa-pencil-alt');
     elEditLinks.forEach((el) => {
       el.style.display = 'block';
     });
