@@ -99,6 +99,10 @@ class UI {
     // add toggle icon
     const elToggle = document.getElementById(`col-task-toggle-icon-${task.id}`);
     elToggle.innerHTML = (justAdded ? '<i class="fas fa-rocket"></i>' : '');
+    // After 1 second remove the toggle icon
+    setTimeout(() => {
+      document.querySelector(`#col-task-toggle-icon-${task.id}`).innerHTML = '';
+    }, 1000)
 
     // add edit and delete icons html
     const elLink = document.getElementById(`col-task-action-icons-${task.id}`);

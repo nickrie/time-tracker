@@ -210,7 +210,7 @@ function refreshLastActive() {
     refreshLastActive();
   }, lastActiveRefresh);
 
-  console.log('refreshLastActive ran');
+  // console.log('refreshLastActive ran');
 
 }
 
