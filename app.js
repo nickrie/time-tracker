@@ -20,9 +20,15 @@ document.querySelector('#task-list').addEventListener('click', (e) => {
 
   // if they clicked on the edit icon then edit the task
   if (e.target.classList.contains('fa-pencil-alt')) {
-    const elId = e.target.parentNode.id;
-    const taskId = parseInt(elId.replace('col-task-edit-icon-',''));
+    const elId = e.target.parentNode.parentNode.id;
+    const taskId = parseInt(elId.replace('col-task-action-icons-',''));
     editTask(taskId);
+  }
+  // if they clicked on the delete icon then delete the task
+  else if (e.target.classList.contains('fa-trash')) {
+    const elId = e.target.parentNode.parentNode.id;
+    const taskId = parseInt(elId.replace('col-task-action-icons-',''));
+    deleteTask(taskId);
   }
   // otherwise toggle the row (start/stop)
   else {

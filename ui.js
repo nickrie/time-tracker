@@ -65,7 +65,7 @@ class UI {
 
     const newCol = document.createElement('div');
     newCol.classList = `col col-${width} align-center`;
-    if (['logged', 'edit-icon'].includes(desc)) {
+    if (['logged', 'action-icons'].includes(desc)) {
       newCol.classList += ' text-right';
     }
     newCol.id = `col-task-${desc}-${id}`;
@@ -89,7 +89,7 @@ class UI {
     // these values will bet set when taskChanged() is called below
     UI.createCol(newRow, task.id, 3, 'logged', '');
     UI.createCol(newRow, task.id, 2, 'last-active', '');
-    UI.createCol(newRow, task.id, 1, 'edit-icon', '');
+    UI.createCol(newRow, task.id, 1, 'action-icons', '');
 
     // add the new row
     const taskList = document.getElementById('task-list');
@@ -100,10 +100,13 @@ class UI {
     const elToggle = document.getElementById(`col-task-toggle-icon-${task.id}`);
     elToggle.innerHTML = (justAdded ? '<i class="fas fa-rocket"></i>' : '');
 
-    // add edit icon html
-    const elLink = document.getElementById(`col-task-edit-icon-${task.id}`);
+    // add edit and delete icons html
+    const elLink = document.getElementById(`col-task-action-icons-${task.id}`);
     elLink.innerHTML = `
-          <i class="fas fa-pencil-alt"></i>
+      <span class="action-links">
+        <i class="fas fa-pencil-alt"></i>
+        <i class="fas fa-trash"></i>
+      </span>
     `;
 
     // add toggle icon hover event handler
@@ -139,9 +142,9 @@ class UI {
     elCard.classList.remove('bg-light');
     elCard.classList.add('bg-primary');
 
-    // Hide all edit links
-    const elEditLinks = document.querySelectorAll('.fa-pencil-alt');
-    elEditLinks.forEach((el) => {
+    // Hide all action links
+    const elActionLinks = document.querySelectorAll('.action-links');
+    elActionLinks.forEach((el) => {
       el.style.display = 'none';
     });
 
@@ -176,9 +179,9 @@ class UI {
     elCard.classList.remove('bg-primary');
     elCard.classList.add('bg-light');
     
-    // Show all edit links
-    const elEditLinks = document.querySelectorAll('.fa-pencil-alt');
-    elEditLinks.forEach((el) => {
+    // Show all action links
+    const elActionLinks = document.querySelectorAll('.action-links');
+    elActionLinks.forEach((el) => {
       el.style.display = 'block';
     });
     

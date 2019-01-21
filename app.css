@@ -10,9 +10,17 @@
 }
 
 .fa-pencil-alt {
-  padding: 0 10px;
+  padding: 0 3px;
 }
 .fa-pencil-alt:hover {
   color: blue;
-  padding: 0 10px;
+  padding: 0 3px;
+}
+
+.fa-trash {
+  padding: 0 3px;
+}
+.fa-trash:hover {
+  color: red;
+  padding: 0 3px;
 }
