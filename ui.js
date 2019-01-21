@@ -210,7 +210,9 @@ class UI {
     UI.clearInputs();
 
     // Focus on the name input
-    document.querySelector('#input-task-name').focus();
+    if (!isMobile) {
+      document.querySelector('#input-task-name').focus();
+    }
 
   }
 
