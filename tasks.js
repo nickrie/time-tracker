@@ -146,10 +146,11 @@ class Tasks {
     }
 
     // Update logged minutes
+    //    We always round up, but if it was active for less than 5 seconds then don't log any time
     let a = moment(new Date());
     let b = moment(task.started);
     let seconds = a.diff(b, 'seconds');
-    let minutes = Math.ceil(seconds / 60);
+    let minutes = seconds < 5 ? 0 : Math.ceil(seconds / 60);
     task.logged += minutes;
 
     // Clear started date

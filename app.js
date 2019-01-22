@@ -29,25 +29,29 @@ document.querySelector('#task-list').addEventListener('click', (e) => {
 
   // if they clicked on the edit ICON then edit the task
   if (e.target.classList.contains('fa-pencil-alt')) {
+    if (e.target.parentNode.disabled) return;
     const elId = e.target.parentNode.parentNode.parentNode.parentNode.id;
     const taskId = parseInt(elId.replace('col-task-action-icons-',''));
     editTask(taskId);
   }
   // if they clicked on the edit BUTTON then edit the task
   else if (e.target.classList.contains('btn-edit')) {
+    if (e.target.disabled) return;
     const elId = e.target.parentNode.parentNode.parentNode.id;
     const taskId = parseInt(elId.replace('col-task-action-icons-',''));
     editTask(taskId);
   }
-  
+
   // if they clicked on the delete ICON then delete the task
   else if (e.target.classList.contains('fa-trash')) {
+    if (e.target.parentNode.disabled) return;
     const elId = e.target.parentNode.parentNode.parentNode.parentNode.id;
     const taskId = parseInt(elId.replace('col-task-action-icons-',''));
     deleteTask(taskId);
   }
   // if they clicked on the delete BUTTON then delete the task
   else if (e.target.classList.contains('btn-delete')) {
+    if (e.target.disabled) return;
     const elId = e.target.parentNode.parentNode.parentNode.id;
     const taskId = parseInt(elId.replace('col-task-action-icons-',''));
     deleteTask(taskId);

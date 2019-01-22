@@ -146,7 +146,7 @@ class UI {
         <div class="d-block d-md-none">
           <button type="button" class="btn btn-outline-dark btn-edit">
             <i class="fas fa-pencil-alt"></i>
-            </button>
+          </button>
         </div>
       </div>
     `;
@@ -189,9 +189,9 @@ class UI {
     elCard.classList.add('bg-primary');
 
     // Hide all action links
-    const elActionLinks = document.querySelectorAll('.action-links');
+    const elActionLinks = document.querySelectorAll('.action-links > div > .btn');
     elActionLinks.forEach((el) => {
-      el.style.display = 'none';
+      el.disabled = true;
     });
 
     // Hide the add button and show the edit buttons
@@ -227,9 +227,9 @@ class UI {
     elCard.classList.add('bg-light');
     
     // Show all action links
-    const elActionLinks = document.querySelectorAll('.action-links');
+    const elActionLinks = document.querySelectorAll('.action-links > div > .btn');
     elActionLinks.forEach((el) => {
-      el.style.display = 'block';
+      el.disabled = false;
     });
     
     // Hide the edit buttons and show the add buttons

@@ -9,10 +9,10 @@
   color: #18BC9C;
 }
 
-.btn-edit:hover {
+.btn-edit:hover:enabled {
   color: blue;
 }
 
-.btn-delete:hover {
+.btn-delete:hover:enabled {
   color: red;
 }
