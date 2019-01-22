@@ -9,18 +9,10 @@
   color: #18BC9C;
 }
 
-.fa-pencil-alt {
-  padding: 0 3px;
-}
-.fa-pencil-alt:hover {
+.btn-edit:hover {
   color: blue;
-  padding: 0 3px;
 }
 
-.fa-trash {
-  padding: 0 3px;
-}
-.fa-trash:hover {
+.btn-delete:hover {
   color: red;
-  padding: 0 3px;
 }

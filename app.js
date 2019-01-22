@@ -27,18 +27,32 @@ document.querySelector('#btns-edit').style.display = 'none';
 // Row click: Toggle Task
 document.querySelector('#task-list').addEventListener('click', (e) => {
 
-  // if they clicked on the edit icon then edit the task
+  // if they clicked on the edit ICON then edit the task
   if (e.target.classList.contains('fa-pencil-alt')) {
-    const elId = e.target.parentNode.parentNode.id;
+    const elId = e.target.parentNode.parentNode.parentNode.parentNode.id;
     const taskId = parseInt(elId.replace('col-task-action-icons-',''));
     editTask(taskId);
   }
-  // if they clicked on the delete icon then delete the task
+  // if they clicked on the edit BUTTON then edit the task
+  else if (e.target.classList.contains('btn-edit')) {
+    const elId = e.target.parentNode.parentNode.parentNode.id;
+    const taskId = parseInt(elId.replace('col-task-action-icons-',''));
+    editTask(taskId);
+  }
+  
+  // if they clicked on the delete ICON then delete the task
   else if (e.target.classList.contains('fa-trash')) {
-    const elId = e.target.parentNode.parentNode.id;
+    const elId = e.target.parentNode.parentNode.parentNode.parentNode.id;
     const taskId = parseInt(elId.replace('col-task-action-icons-',''));
     deleteTask(taskId);
   }
+  // if they clicked on the delete BUTTON then delete the task
+  else if (e.target.classList.contains('btn-delete')) {
+    const elId = e.target.parentNode.parentNode.parentNode.id;
+    const taskId = parseInt(elId.replace('col-task-action-icons-',''));
+    deleteTask(taskId);
+  }
+ 
   // otherwise toggle the row (start/stop)
   else {
 

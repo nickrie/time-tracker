@@ -19,21 +19,31 @@ class UI {
   // Get the string to display for a task's Last Active time
   static getLastActiveStr(task) {
 
-    let lastActive;
+    let short;
+    let long;
 
     if (task.started !== null) {
       let a = moment(new Date());
       let b = moment(task.started);
       let seconds = a.diff(b, 'seconds');
       let minutes = Math.ceil(seconds / 60);
-      lastActive = 'ACTIVE for ' + UI.getLoggedTimeStr(minutes);
+      long = 'ACTIVE for ' + UI.getLoggedTimeStr(minutes);
+      short = 'ACTIVE ' + UI.getLoggedTimeStr(minutes);
       // + moment(task.started).toNow(true);
     }
     else {
-      lastActive = moment(task.last).from(new Date());
+      let a = moment(new Date());
+      let b = moment(task.last);
+      let seconds = a.diff(b, 'seconds');
+      let minutes = Math.ceil(seconds / 60);
+      long = moment(task.last).from(new Date());
+      short = UI.getLoggedTimeStr(minutes);
     }
 
-    return lastActive;
+    return {
+      long,
+      short
+    };
 
   }
 
@@ -93,11 +103,11 @@ class UI {
     // add columns to our new row
     // UI.createCol(newRow, task.id, 'id', task.id);
     UI.createCol(newRow, task.id, 1, 'toggle-icon', '');
-    UI.createCol(newRow, task.id, 5, 'name', task.name);
+    UI.createCol(newRow, task.id, 4, 'name', task.name);
     // these values will bet set when taskChanged() is called below
     UI.createCol(newRow, task.id, 3, 'logged', '');
     UI.createCol(newRow, task.id, 2, 'last-active', '');
-    UI.createCol(newRow, task.id, 1, 'action-icons', '');
+    UI.createCol(newRow, task.id, 2, 'action-icons', '');
 
     // add the new row
     const taskList = document.getElementById('task-list');
@@ -112,13 +122,33 @@ class UI {
       document.querySelector(`#col-task-toggle-icon-${task.id}`).innerHTML = '';
     }, 1000)
 
+    // add Last Active divs
+    //    The first div will be used for the long text,
+    //    the second will be used for the short text.
+    const elLastActive = document.getElementById(`col-task-last-active-${task.id}`);
+    elLastActive.innerHTML = `
+        <div class="d-none d-lg-block"></div>
+        <div class="d-block d-lg-none"></div>
+    `;
+
     // add edit and delete icons html
     const elLink = document.getElementById(`col-task-action-icons-${task.id}`);
     elLink.innerHTML = `
-      <span class="action-links">
-        <i class="fas fa-pencil-alt"></i>
-        <i class="fas fa-trash"></i>
-      </span>
+      <div class="action-links">
+        <div class="d-none d-md-block">
+          <button type="button" class="btn btn-outline-dark btn-edit">
+            <i class="fas fa-pencil-alt"></i>
+          </button>
+          <button type="button" class="btn btn-outline-dark btn-delete">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+        <div class="d-block d-md-none">
+          <button type="button" class="btn btn-outline-dark btn-edit">
+            <i class="fas fa-pencil-alt"></i>
+            </button>
+        </div>
+      </div>
     `;
 
     // add toggle icon hover event handler
@@ -224,9 +254,16 @@ class UI {
     UI.checkTaskListEmpty();
   }
 
-  // Updates the "Last Active" string for a task
+  // Updates the "Last Active" strings for a task
   static refreshLastActive(task) {
-    document.getElementById(`col-task-last-active-${task.id}`).textContent = UI.getLastActiveStr(task);
+    const lastActive = UI.getLastActiveStr(task);
+    let children = document.getElementById(`col-task-last-active-${task.id}`).childNodes;
+    children = Array.prototype.filter.call(children, function(el) { 
+      return el.nodeType == 1;
+    });
+    // First div is the long string, second is the short string
+    children[0].textContent = lastActive.long;
+    children[1].textContent = lastActive.short;
   }
 
   // Updates task values on screen
