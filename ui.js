@@ -211,7 +211,7 @@ class UI {
   }
 
   // Hides the task edit form
-  static clearEditTask() {
+  static clearEditTask() { 
 
     // Revert row color changes
     const taskId = document.querySelector('#input-task-id').value

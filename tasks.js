@@ -1,9 +1,7 @@
 // Tasks controller class
 
 class Tasks {
-
   constructor() {
-
     // Get Tasks from LS
     if (window.localStorage.getItem('tasks') === null) {
       this.tasks = {
@@ -14,14 +12,12 @@ class Tasks {
     } else {
       this.tasks = JSON.parse(window.localStorage.getItem('tasks'));
     }
-
   }
 
-  // Adds a new task and returns an object with either 
+  // Adds a new task and returns an object with either
   //    {error: true, focus: '', msg: ''} or
   //    {error: false, id: }
   addTask(name, hours, minutes) {
-
     // Validate input values
     hours = parseInt(hours);
     minutes = parseInt(minutes);
@@ -35,7 +31,7 @@ class Tasks {
     const newTask = {
       id: newId,
       name: name,
-      logged: (hours * 60) + minutes,
+      logged: hours * 60 + minutes,
       started: null,
       last: null
     };
@@ -44,15 +40,13 @@ class Tasks {
     // Store tasks
     this.storeTasks();
 
-    return {error: false, id: newId};
-
+    return { error: false, id: newId };
   }
 
-  // Updates a task and returns an object with either 
+  // Updates a task and returns an object with either
   //    {error: true, focus: '', msg: ''} or
   //    {error: false }
   updateTask(id, name, hours, minutes) {
-
     // Validate input values
     hours = parseInt(hours);
     minutes = parseInt(minutes);
@@ -60,23 +54,21 @@ class Tasks {
     if (result.error) {
       return result;
     }
-    
+
     // This is by reference so we can update task and changes will get stored when we call storeTasks
     const task = this.tasks.list[id];
 
     // Update values
     task.name = name;
-    task.logged = (hours * 60) + minutes;
-    
+    task.logged = hours * 60 + minutes;
+
     // Store tasks
     this.storeTasks();
 
-    return {error: false};
-    
+    return { error: false };
   }
 
   deleteTask(taskId) {
-
     // If this was the currently active task, clear it
     if (this.tasks.currentTaskId == taskId) {
       this.tasks.currentTaskId = null;
@@ -87,7 +79,6 @@ class Tasks {
 
     // Store tasks
     this.storeTasks();
-
   }
 
   // Returns a task object for the given id
@@ -101,7 +92,6 @@ class Tasks {
   //    {error: true, msg: ''} or
   //    {error: false, stoppedId: }
   startTask(taskId) {
-
     let stoppedId = null;
 
     // This is by reference so we can update task and changes will get stored when we call storeTasks
@@ -109,7 +99,7 @@ class Tasks {
 
     // Ensure this task is not already active
     if (task.started !== null) {
-      return {error: true, msg: 'This task is already active.'};
+      return { error: true, msg: 'This task is already active.' };
     }
 
     // Stop currently running task
@@ -128,21 +118,19 @@ class Tasks {
     // Store tasks
     this.storeTasks();
 
-    return {error: false, stoppedId: stoppedId};
-
+    return { error: false, stoppedId: stoppedId };
   }
 
   // Stops and task and returns an object
   //    {error: true, msg: ''} or
   //    {error: false }
   stopTask(taskId) {
-
     // This is by reference so we can update task and changes will get stored
     const task = this.tasks.list[taskId];
 
     // Ensure this task is actually active
     if (task.started === null) {
-      return {error: true, msg: 'This task is not currently active.'};
+      return { error: true, msg: 'This task is not currently active.' };
     }
 
     // Update logged minutes
@@ -165,40 +153,33 @@ class Tasks {
     // Store tasks
     this.storeTasks();
 
-    return {error: false};
-
+    return { error: false };
   }
 
   // Updates the tasks object in LS
   storeTasks() {
-
     window.localStorage.setItem('tasks', JSON.stringify(this.tasks));
-
   }
 
   // starts/stops a task depending on it's current state
   // if another task is stopped due to the toggle it's id is returned
   // via the the object returned by startTask()
   toggleTask(taskId) {
-
     const task = this.tasks.list[taskId];
     let result;
 
     if (task.started === null) {
       result = this.startTask(task.id);
-      result.toggleAction = 'START'
-    }
-    else {
+      result.toggleAction = 'START';
+    } else {
       result = this.stopTask(task.id);
       result.toggleAction = 'STOP';
     }
 
     return result;
-
   }
 
   checkInputValues(id, name, hours, minutes) {
-
     // Ensure another task with that name doesn't already exist
 
     let nameExists = false;
@@ -209,21 +190,31 @@ class Tasks {
       }
     }
     if (nameExists === true) {
-      return {error: true, focus: 'name', msg: 'A task already exists with that name.'};
+      return {
+        error: true,
+        focus: 'name',
+        msg: 'A task already exists with that name.'
+      };
     }
 
     // Check hours and minutes to ensure they are integer values of the expected size
 
     if (hours < 0 || minutes < 0 || isNaN(hours) || isNaN(minutes)) {
-      return {error: true, focus: 'hours', msg: 'Hours and minutes must be positive integer values.'};
+      return {
+        error: true,
+        focus: 'hours',
+        msg: 'Hours and minutes must be positive integer values.'
+      };
     }
 
     if (minutes >= 60) {
-      return {error: true, focus: 'minutes', msg: 'Minutes must be under 60.'};
+      return {
+        error: true,
+        focus: 'minutes',
+        msg: 'Minutes must be under 60.'
+      };
     }
 
-    return {error: false};
-
+    return { error: false };
   }
-
 }

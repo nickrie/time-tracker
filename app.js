@@ -32,7 +32,7 @@ document.querySelector('#task-list').addEventListener('click', (e) => {
     if (e.target.parentNode.disabled) return;
     const elId = e.target.parentNode.parentNode.parentNode.parentNode.id;
     const taskId = parseInt(elId.replace('col-task-action-icons-',''));
-    editTask(taskId);
+    editTask(taskId); 
   }
   // if they clicked on the edit BUTTON then edit the task
   else if (e.target.classList.contains('btn-edit')) {
