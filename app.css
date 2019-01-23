@@ -1,18 +1,21 @@
-#task-list .row-task:hover {
-  background-color: #EEE;
-}
-
 .fa-stop {
   color: red;
 }
 .fa-play {
-  color: #18BC9C;
+  color: #18bc9c;
 }
 
-.btn-edit:hover:enabled {
-  color: blue;
-}
+/* prevent having to double click on mobile to click buttons or start/stop a task */
+@media (hover: hover) {
+  #task-list .row-task:hover {
+    background-color: #eee;
+  }
 
-.btn-delete:hover:enabled {
-  color: red;
+  .btn-edit:hover:enabled {
+    color: blue;
+  }
+
+  .btn-delete:hover:enabled {
+    color: red;
+  }
 }
