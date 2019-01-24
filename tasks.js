@@ -180,6 +180,16 @@ class Tasks {
   }
 
   checkInputValues(id, name, hours, minutes) {
+    // Ensure name is not empty
+
+    if (name.trim() == '') {
+      return {
+        error: true,
+        focus: 'name',
+        msg: 'NAME is required.'
+      };
+    }
+
     // Ensure another task with that name doesn't already exist
 
     let nameExists = false;

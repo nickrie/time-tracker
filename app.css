@@ -6,7 +6,7 @@
 }
 
 /* prevent having to double click on mobile to click buttons or start/stop a task */
-@media (hover: hover) {
+@media not (hover: none) {
   #task-list .row-task:hover {
     background-color: #eee;
   }
