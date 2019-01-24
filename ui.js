@@ -21,13 +21,8 @@ class UI {
     let long;
 
     if (task.started !== null) {
-      let a = moment(new Date());
-      let b = moment(task.started);
-      let seconds = a.diff(b, 'seconds');
-      let minutes = Math.ceil(seconds / 60);
-      long = 'ACTIVE for ' + UI.getLoggedTimeStr(minutes);
-      short = 'ACTIVE ' + UI.getLoggedTimeStr(minutes);
-      // + moment(task.started).toNow(true);
+      long = 'ACTIVE';
+      short = 'ACTIVE';
     } else {
       let a = moment(new Date());
       let b = moment(task.last);
@@ -179,9 +174,7 @@ class UI {
     elRow.classList.add('text-light');
 
     // If the task is active we want to indicate it's being editing by changing the name column bg-color
-    const elColIcons = document.querySelector(
-      `#col-task-name-${task.id}`
-    );
+    const elColIcons = document.querySelector(`#col-task-name-${task.id}`);
     elColIcons.classList.add('bg-primary');
 
     // Change the color of the input card
@@ -224,9 +217,7 @@ class UI {
 
     // Remove name column bg-color
     if (elRow !== null) {
-      const elColIcons = document.querySelector(
-        `#col-task-name-${taskId}`
-      );
+      const elColIcons = document.querySelector(`#col-task-name-${taskId}`);
       elColIcons.classList.remove('bg-primary');
     }
 
@@ -277,6 +268,25 @@ class UI {
     children[1].textContent = lastActive.short;
   }
 
+  // Updates the "Time Logged" strings for a task
+  static refreshTimeLogged(task) {
+    let currentMinutes = 0;
+    // if the task is currently running, add the elapsed time
+    if (task.started !== null) {
+      const a = moment(new Date());
+      const b = moment(task.started);
+      const seconds = a.diff(b, 'seconds');
+      // we only start adding time if 5 seconds have elapsed, see task.js::stopTask()
+      if (seconds >= 5) {
+        currentMinutes = Math.ceil(seconds / 60);
+      }
+    }
+    // update Time Logged
+    document.getElementById(
+      `col-task-logged-${task.id}`
+    ).textContent = UI.getLoggedTimeStr(task.logged + currentMinutes);
+  }
+
   // Updates task values on screen
   static taskChanged(task) {
     // console.log('taskChanged(' + task.id + ')');
@@ -288,9 +298,7 @@ class UI {
     UI.refreshLastActive(task);
 
     // update Time Logged
-    document.getElementById(
-      `col-task-logged-${task.id}`
-    ).textContent = UI.getLoggedTimeStr(task.logged);
+    UI.refreshTimeLogged(task);
 
     // set ACTIVE style
     if (task.started !== null) {
