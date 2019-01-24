@@ -167,15 +167,29 @@ class UI {
   // Displays the task edit form
   static editTask(task) {
     const elName = document.querySelector('#input-task-name');
-
-    // Change the background color of the item being edited
     const elRow = document.querySelector(`#row-task-${task.id}`);
-    elRow.classList.add('bg-primary');
-    elRow.classList.add('text-light');
 
-    // If the task is active we want to indicate it's being editing by changing the name column bg-color
-    const elColIcons = document.querySelector(`#col-task-name-${task.id}`);
-    elColIcons.classList.add('bg-primary');
+    // If the task is active we want to indicate it's being editing
+    // by changing the name column bg-color and add help text
+    if (elRow.classList.contains('bg-success')) {
+      const elColIcons = document.querySelector(`#col-task-name-${task.id}`);
+      elColIcons.classList.add('bg-primary');
+      elColIcons.classList.add('text-light');
+      // Add help text
+      const activeMinutes = UI.getActiveMinutes(task);
+      if (activeMinutes > 0) {
+        document.getElementById('edit-help').innerText =
+          'NOTE: This does not include the current active time of ' +
+          activeMinutes +
+          ' minute' +
+          (activeMinutes > 1 ? 's' : '') +
+          '.';
+      }
+    } else {
+      // Change the background color of the item being edited
+      elRow.classList.add('bg-primary');
+      elRow.classList.add('text-light');
+    }
 
     // Change the color of the input card
     const elCard = document.querySelector('#input-card');
@@ -207,18 +221,22 @@ class UI {
 
   // Hides the task edit form
   static clearEditTask() {
-    // Revert row color changes
     const taskId = document.querySelector('#input-task-id').value;
     const elRow = document.querySelector(`#row-task-${taskId}`);
-    if (elRow !== null) {
-      elRow.classList.remove('bg-primary');
-      elRow.classList.remove('text-light');
-    }
 
-    // Remove name column bg-color
     if (elRow !== null) {
-      const elColIcons = document.querySelector(`#col-task-name-${taskId}`);
-      elColIcons.classList.remove('bg-primary');
+      // If the task is active remove name column bg-color and help text
+      if (elRow.classList.contains('bg-success')) {
+        const elColIcons = document.querySelector(`#col-task-name-${taskId}`);
+        elColIcons.classList.remove('bg-primary');
+        elColIcons.classList.remove('text-light');
+        document.getElementById('edit-help').innerText = '';
+      }
+      // Revert row color changes
+      else {
+        elRow.classList.remove('bg-primary');
+        elRow.classList.remove('text-light');
+      }
     }
 
     // Revert input card background color
@@ -268,23 +286,28 @@ class UI {
     children[1].textContent = lastActive.short;
   }
 
-  // Updates the "Time Logged" strings for a task
-  static refreshTimeLogged(task) {
-    let currentMinutes = 0;
-    // if the task is currently running, add the elapsed time
+  // Gets the # of minutes a task has been active
+  static getActiveMinutes(task) {
+    let activeMinutes = 0;
     if (task.started !== null) {
       const a = moment(new Date());
       const b = moment(task.started);
       const seconds = a.diff(b, 'seconds');
       // we only start adding time if 5 seconds have elapsed, see task.js::stopTask()
       if (seconds >= 5) {
-        currentMinutes = Math.ceil(seconds / 60);
+        activeMinutes = Math.ceil(seconds / 60);
       }
     }
+    return activeMinutes;
+  }
+
+  // Updates the "Time Logged" strings for a task
+  static refreshTimeLogged(task) {
+    const activeMinutes = UI.getActiveMinutes(task);
     // update Time Logged
     document.getElementById(
       `col-task-logged-${task.id}`
-    ).textContent = UI.getLoggedTimeStr(task.logged + currentMinutes);
+    ).textContent = UI.getLoggedTimeStr(task.logged + activeMinutes);
   }
 
   // Updates task values on screen
