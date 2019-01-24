@@ -15,6 +15,21 @@ class UI {
     document.getElementById('input-task-minutes').value = 0;
   }
 
+  // Gets the # of minutes a task has been active
+  static getActiveMinutes(task) {
+    let activeMinutes = 0;
+    if (task.started !== null) {
+      const a = moment(new Date());
+      const b = moment(task.started);
+      const seconds = a.diff(b, 'seconds');
+      // we only start adding time if 5 seconds have elapsed, see task.js::stopTask()
+      if (seconds >= 5) {
+        activeMinutes = Math.ceil(seconds / 60);
+      }
+    }
+    return activeMinutes;
+  }
+  
   // Get the string to display for a task's Last Active time
   static getLastActiveStr(task) {
     let short;
@@ -29,7 +44,7 @@ class UI {
       let seconds = a.diff(b, 'seconds');
       let minutes = Math.ceil(seconds / 60);
       long = moment(task.last).from(new Date());
-      short = UI.getLoggedTimeStr(minutes);
+      short = UI.getTimeStr(minutes);
     }
 
     return {
@@ -57,7 +72,7 @@ class UI {
   }
 
   // Get the "Logged Time" string to display for a task
-  static getLoggedTimeStr(minutes) {
+  static getTimeStr(minutes) {
     const time = UI.getHoursMinutes(minutes);
 
     return (time.hours > 0 ? `${time.hours}h ` : '') + `${time.minutes}m`;
@@ -180,9 +195,7 @@ class UI {
       if (activeMinutes > 0) {
         document.getElementById('edit-help').innerText =
           'NOTE: This does not include the current active time of ' +
-          activeMinutes +
-          ' minute' +
-          (activeMinutes > 1 ? 's' : '') +
+          UI.getTimeStr(activeMinutes) +
           '.';
       }
     } else {
@@ -286,28 +299,13 @@ class UI {
     children[1].textContent = lastActive.short;
   }
 
-  // Gets the # of minutes a task has been active
-  static getActiveMinutes(task) {
-    let activeMinutes = 0;
-    if (task.started !== null) {
-      const a = moment(new Date());
-      const b = moment(task.started);
-      const seconds = a.diff(b, 'seconds');
-      // we only start adding time if 5 seconds have elapsed, see task.js::stopTask()
-      if (seconds >= 5) {
-        activeMinutes = Math.ceil(seconds / 60);
-      }
-    }
-    return activeMinutes;
-  }
-
   // Updates the "Time Logged" strings for a task
   static refreshTimeLogged(task) {
     const activeMinutes = UI.getActiveMinutes(task);
     // update Time Logged
     document.getElementById(
       `col-task-logged-${task.id}`
-    ).textContent = UI.getLoggedTimeStr(task.logged + activeMinutes);
+    ).textContent = UI.getTimeStr(task.logged + activeMinutes);
   }
 
   // Updates task values on screen
