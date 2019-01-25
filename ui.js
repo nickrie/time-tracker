@@ -153,25 +153,27 @@ class UI {
     `;
 
     // add toggle icon hover event handler
-    const el = document.getElementById(newRow.id);
-    const elToggleIcon = document.querySelector(
-      `#col-task-toggle-icon-${task.id}`
-    );
-    el.addEventListener('mouseenter', e => {
-      if (
-        document
-          .getElementById(`row-task-${task.id}`)
-          .classList.contains('bg-success')
-      ) {
-        elToggleIcon.innerHTML = '<i class="fas fa-stop"></i>';
-      } else {
-        elToggleIcon.innerHTML = '<i class="fas fa-play"></i>';
-      }
-    });
-    el.addEventListener('mouseleave', e => {
-      elToggleIcon.innerHTML = '';
-    });
-
+    if (!isMobile) {
+      const el = document.getElementById(newRow.id);
+      const elToggleIcon = document.querySelector(
+        `#col-task-toggle-icon-${task.id}`
+      );
+      el.addEventListener('mouseenter', e => {
+        if (
+          document
+            .getElementById(`row-task-${task.id}`)
+            .classList.contains('bg-success')
+        ) {
+          elToggleIcon.innerHTML = '<i class="fas fa-stop"></i>';
+        } else {
+          elToggleIcon.innerHTML = '<i class="fas fa-play"></i>';
+        }
+      });
+      el.addEventListener('mouseleave', e => {
+        elToggleIcon.innerHTML = '';
+      });
+    }
+    
     // call taskChanged to set the initial time values
     UI.taskChanged(task);
 
