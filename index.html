@@ -18,22 +18,23 @@
 <body>
 
   <!-- navbar -->
-  <div class="navbar sticky-top navbar-expand-md navbar-dark bg-primary">
+  <div class="navbar navbar-expand-md navbar-dark bg-primary">
     <div class="container">
       <a href="#" class="navbar-brand">
         <i class="fas fa-tasks pr-3"></i>
         Time Tracker
+        <a href="https://github.com/nickrie" class="text-light ml-2"><i class="fab fa-github fa-2x"></i></a>
       </a>
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-          <a href="https://github.com/nickrie" class="text-light"><i class="fab fa-github fa-2x"></i></a>
+          <a href id="nav-btn-show-form" class="text-light" data-toggle="collapse" data-target="#input-card" aria-expanded="true" aria-controls="input-card" style="display: none;"><i class="fas fa-arrow-down fa-2x"></i></a>
         </li>
       </ul>
     </div>
   </div>
 
   <!-- input form card -->
-  <div id="input-card" class="container card bg-light mt-3 mb-3">
+  <div id="input-card" class="container collapse show card bg-light mt-3">
     <div class="card-body">
 
       <form id="form-new" onsubmit="return false;" class="ml-auto my-0">
@@ -61,7 +62,18 @@
           </div>
         </div>
         
-        <button id="btn-add-task" class="btn btn-md-block btn-primary my-2 my-sm-0">Add Task</button>
+        <span id="btns-add">
+          <div class="row">
+            <div class="col">
+              <button id="btn-add-task" class="btn btn-md-block btn-primary my-2 my-sm-0">Add Task</button>
+            </div>
+            <div class="col text-right">
+              <button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#input-card" aria-expanded="true" aria-controls="input-card">
+                <i id="collapse-icon" class="fas fa-arrow-up"></i>
+              </button>        
+            </div>
+          </div>
+        </span>
         <span id="btns-edit">
           <div class="row">
             <div id="edit-help" class="col-md-4 text-light order-md-2"></div>
@@ -78,7 +90,7 @@
   </div> 
 
   <!-- task list, hidden by default -->
-  <div id="task-list" class="container mb-5" style="display: none;">
+  <div id="task-list" class="container mt-3 mb-5" style="display: none;">
     <div class="row text-secondary" id="row-header">
       <div class="col col-1"></div>
       <div class="col col-4">
@@ -112,6 +124,10 @@
     </p>
   </footer>
 
+  <!-- bootstrap JS dependencies - needed for collapse -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
   <!-- moment js library for durations -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.23.0/moment.js"></script>
   <!-- local js files -->

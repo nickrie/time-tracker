@@ -84,7 +84,7 @@ document.querySelector('#task-list').addEventListener('click', e => {
 // Button: Add Task
 document.getElementById('btn-add-task').addEventListener('click', e => {
   const onEditScreen =
-    document.querySelector('#btn-add-task').style.display == 'none';
+    document.querySelector('#btns-add').style.display == 'none';
 
   // Ensure enter key does not add a task on the edit screen
   if (!onEditScreen) {
@@ -194,7 +194,6 @@ function toggleTask(taskId) {
     // Display the error
     UI.alert(result.error);
   }
-
 }
 
 // Start a task (make it active and start tracking time)
@@ -232,3 +231,18 @@ const timeRefresh = 20000; // 20 seconds
 setTimeout(() => {
   refreshTimes();
 }, timeRefresh);
+
+// Handle show/collapse of input-card
+$(document).ready(function() {
+  $('.collapse')
+    .on('show.bs.collapse', function() {
+      if ($(this).attr('id') == 'input-card') {
+        UI.showForm();
+      }
+    })
+    .on('hide.bs.collapse', function() {
+      if ($(this).attr('id') == 'input-card') {
+        UI.collapseForm();
+      }
+    });
+});

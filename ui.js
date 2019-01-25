@@ -217,8 +217,12 @@ class UI {
     });
 
     // Hide the add button and show the edit buttons
-    document.querySelector('#btn-add-task').style.display = 'none';
+    document.querySelector('#btns-add').style.display = 'none';
     document.querySelector('#btns-edit').style.display = 'inline';
+
+    // Show the form if it's collapsed
+    UI.showForm();
+
     // Focus the input
     elName.focus();
     elName.scrollTop;
@@ -265,7 +269,7 @@ class UI {
     });
 
     // Hide the edit buttons and show the add buttons
-    document.querySelector('#btn-add-task').style.display = 'block';
+    document.querySelector('#btns-add').style.display = 'block';
     document.querySelector('#btns-edit').style.display = 'none';
 
     // Clear inputs
@@ -380,4 +384,31 @@ class UI {
       document.querySelector('#empty-list').style.display = 'block';
     }
   }
+
+  static collapseForm() {
+
+    const elNavButton = document.getElementById('nav-btn-show-form');
+    const elFormBody = document.getElementById('input-card');
+    
+    if (elFormBody.classList.contains('show')) {
+      document.getElementById('btn-add-task').style.display = 'none';
+      elNavButton.style.display = 'inline';
+      elFormBody.classList.remove('show');
+    }
+
+  }
+
+  static showForm() {
+
+    const elNavButton = document.getElementById('nav-btn-show-form');
+    const elFormBody = document.getElementById('input-card');
+    
+    if (!elFormBody.classList.contains('show')) {
+      document.getElementById('btn-add-task').style.display = 'inline';
+      elNavButton.style.display = 'none';
+      elFormBody.classList.add('show');
+    }
+
+  }
+
 }
