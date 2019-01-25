@@ -1,3 +1,7 @@
+// Set the copyright year
+const now = new Date();
+document.getElementById('copy-year').innerHTML = now.getFullYear();
+
 // Tasks
 const tasks = new Tasks();
 // Display existing tasks

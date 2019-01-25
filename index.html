@@ -22,8 +22,13 @@
     <div class="container">
       <a href="#" class="navbar-brand">
         <i class="fas fa-tasks pr-3"></i>
-        Time Tracker v1
+        Time Tracker
       </a>
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a href="https://github.com/nickrie" class="text-light"><i class="fab fa-github fa-2x"></i></a>
+        </li>
+      </ul>
     </div>
   </div>
 
@@ -73,7 +78,7 @@
   </div> 
 
   <!-- task list, hidden by default -->
-  <div id="task-list" class="container" style="display: none;">
+  <div id="task-list" class="container mb-5" style="display: none;">
     <div class="row text-secondary" id="row-header">
       <div class="col col-1"></div>
       <div class="col col-4">
@@ -90,10 +95,16 @@
   </div>
 
   <!-- empty list, hidden by default -->
-  <div id="empty-list" class="container text-center text-secondary mt-5" style="display: none;">
+  <div id="empty-list" class="container text-center text-secondary my-5" style="display: none;">
     <h1 class="display-4">Your task list is empty.</h4>
     <p class="lead">Add a task above to get started!</p>
   </div>
+
+  <footer class="bg-light py-3 text-center text-success">
+    <p class="mb-0">
+      &copy; <a href="https://github.com/nickrie">github.com/nickrie</a> <span id="copy-year"></span>
+    </p>
+  </footer>
 
   <!-- moment js library for durations -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.23.0/moment.js"></script>
