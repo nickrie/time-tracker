@@ -18,7 +18,7 @@
 <body>
 
   <!-- navbar -->
-  <div class="navbar navbar-expand-md navbar-dark bg-primary">
+  <div class="navbar sticky-top navbar-expand-md navbar-dark bg-primary">
     <div class="container">
       <a href="#" class="navbar-brand">
         <i class="fas fa-tasks pr-3"></i>
@@ -33,61 +33,65 @@
     </div>
   </div>
 
+  <div class="my-2"></div>
+
   <!-- input form card -->
-  <div id="input-card" class="container collapse show card bg-light mt-3">
-    <div class="card-body">
+  <div id="input-card" class="collapse show">
+    <div class="container card bg-light">
+      <div class="card-body">
 
-      <form id="form-new" onsubmit="return false;" class="ml-auto my-0">
+        <form id="form-new" onsubmit="return false;" class="ml-auto my-0">
 
-        <div class="row">
-          <div class="form-group col-md-8">
-              <input id="input-task-id" type="hidden">
-              <input id="input-task-name" class="form-control mr-sm-2" type="text" placeholder="Task Name">
-          </div>
-          <div class="form-group col-md-2">
-            <div class="input-group">
-              <input id="input-task-hours" class="form-control" type="number" value="0" maxlength="3" placeholder="Hours">
-              <div class="input-group-append">
-                <div class="input-group-text">h</div>
+          <div class="row">
+            <div class="form-group col-md-8">
+                <input id="input-task-id" type="hidden">
+                <input id="input-task-name" class="form-control mr-sm-2" type="text" placeholder="Task Name">
+            </div>
+            <div class="form-group col-md-2">
+              <div class="input-group">
+                <input id="input-task-hours" class="form-control" type="number" value="0" maxlength="3" placeholder="Hours">
+                <div class="input-group-append">
+                  <div class="input-group-text">h</div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group col-md-2">
+              <div class="input-group">
+                <input id="input-task-minutes" class="form-control" type="number" value="0" maxlength="2" placeholder="Minutes">
+                <div class="input-group-append">
+                  <div class="input-group-text">m</div>
+                </div>
               </div>
             </div>
           </div>
-          <div class="form-group col-md-2">
-            <div class="input-group">
-              <input id="input-task-minutes" class="form-control" type="number" value="0" maxlength="2" placeholder="Minutes">
-              <div class="input-group-append">
-                <div class="input-group-text">m</div>
+          
+          <span id="btns-add">
+            <div class="row">
+              <div class="col">
+                <button id="btn-add-task" class="btn btn-md-block btn-primary my-2 my-sm-0">Add Task</button>
+              </div>
+              <div class="col text-right">
+                <button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#input-card" aria-expanded="true" aria-controls="input-card">
+                  <i id="collapse-icon" class="fas fa-arrow-up"></i>
+                </button>        
               </div>
             </div>
-          </div>
-        </div>
-        
-        <span id="btns-add">
-          <div class="row">
-            <div class="col">
-              <button id="btn-add-task" class="btn btn-md-block btn-primary my-2 my-sm-0">Add Task</button>
+          </span>
+          <span id="btns-edit">
+            <div class="row">
+              <div id="edit-help" class="col-md-4 text-light order-md-2"></div>
+              <div class="col-md-8 order-md-1">
+                <button id="btn-submit-edit" class="btn btn-success my-2 my-sm-0">Submit Changes</button>
+                <button id="btn-cancel" class="btn btn-warning my-2 my-sm-0">Cancel</button>
+                <button id="btn-delete-task" class="btn btn-danger my-2 my-sm-0">Delete Task</button>
+              </div>
             </div>
-            <div class="col text-right">
-              <button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#input-card" aria-expanded="true" aria-controls="input-card">
-                <i id="collapse-icon" class="fas fa-arrow-up"></i>
-              </button>        
-            </div>
-          </div>
-        </span>
-        <span id="btns-edit">
-          <div class="row">
-            <div id="edit-help" class="col-md-4 text-light order-md-2"></div>
-            <div class="col-md-8 order-md-1">
-              <button id="btn-submit-edit" class="btn btn-success my-2 my-sm-0">Submit Changes</button>
-              <button id="btn-cancel" class="btn btn-warning my-2 my-sm-0">Cancel</button>
-              <button id="btn-delete-task" class="btn btn-danger my-2 my-sm-0">Delete Task</button>
-            </div>
-          </div>
-        </span>
-      </form>
+          </span>
+        </form>
 
-    </div>
-  </div> 
+      </div>
+    </div> 
+  </div>
 
   <!-- task list, hidden by default -->
   <div id="task-list" class="container mt-3 mb-5" style="display: none;">
@@ -125,7 +129,10 @@
   </footer>
 
   <!-- bootstrap JS dependencies - needed for collapse -->
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <!--
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
   <!-- moment js library for durations -->

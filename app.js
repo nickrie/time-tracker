@@ -234,15 +234,11 @@ setTimeout(() => {
 
 // Handle show/collapse of input-card
 $(document).ready(function() {
-  $('.collapse')
+  $('#input-card')
     .on('show.bs.collapse', function() {
-      if ($(this).attr('id') == 'input-card') {
-        UI.showForm();
-      }
+      UI.showForm();
     })
     .on('hide.bs.collapse', function() {
-      if ($(this).attr('id') == 'input-card') {
-        UI.collapseForm();
-      }
+      UI.collapseForm();
     });
 });

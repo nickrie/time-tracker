@@ -387,26 +387,18 @@ class UI {
 
   static collapseForm() {
 
-    const elNavButton = document.getElementById('nav-btn-show-form');
-    const elFormBody = document.getElementById('input-card');
-    
-    if (elFormBody.classList.contains('show')) {
+    if (document.getElementById('input-card').classList.contains('show')) {
       document.getElementById('btn-add-task').style.display = 'none';
-      elNavButton.style.display = 'inline';
-      elFormBody.classList.remove('show');
+      document.getElementById('nav-btn-show-form').style.display = 'inline';
     }
 
   }
 
   static showForm() {
 
-    const elNavButton = document.getElementById('nav-btn-show-form');
-    const elFormBody = document.getElementById('input-card');
-    
-    if (!elFormBody.classList.contains('show')) {
+    if (!document.getElementById('input-card').classList.contains('show')) {
       document.getElementById('btn-add-task').style.display = 'inline';
-      elNavButton.style.display = 'none';
-      elFormBody.classList.add('show');
+      document.getElementById('nav-btn-show-form').style.display = 'none';
     }
 
   }
