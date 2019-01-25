@@ -32,19 +32,24 @@ class UI {
   
   // Get the string to display for a task's Last Active time
   static getLastActiveStr(task) {
-    let short;
-    let long;
+    let short = '';
+    let long = '';
 
     if (task.started !== null) {
       long = 'ACTIVE';
       short = 'ACTIVE';
     } else {
-      let a = moment(new Date());
-      let b = moment(task.last);
-      let seconds = a.diff(b, 'seconds');
-      let minutes = Math.ceil(seconds / 60);
-      long = moment(task.last).from(new Date());
-      short = UI.getTimeStr(minutes);
+      if (task.last === null) {
+
+      }
+      else {
+        let a = moment(new Date());
+        let b = moment(task.last);
+        let seconds = a.diff(b, 'seconds');
+        let minutes = Math.ceil(seconds / 60);
+        long = moment(task.last).from(new Date());
+        short = UI.getTimeStr(minutes);
+      }
     }
 
     return {
@@ -173,7 +178,7 @@ class UI {
         elToggleIcon.innerHTML = '';
       });
     }
-    
+
     // call taskChanged to set the initial time values
     UI.taskChanged(task);
 

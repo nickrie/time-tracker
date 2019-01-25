@@ -145,7 +145,9 @@ class Tasks {
     task.started = null;
 
     // Update last date
-    task.last = new Date();
+    if (seconds >= 5) {
+      task.last = new Date();
+    }
 
     // Clear currentTaskId
     this.tasks.currentTaskId = null;
