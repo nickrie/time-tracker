@@ -221,7 +221,7 @@ class UI {
     document.querySelector('#btns-edit').style.display = 'inline';
 
     // Show the form if it's collapsed
-    UI.showForm();
+    UI.showForm(true);
 
     // Focus the input
     elName.focus();
@@ -387,16 +387,19 @@ class UI {
 
   static collapseForm() {
 
-    if (document.getElementById('input-card').classList.contains('show')) {
+    if (document.getElementById('input-collapse').classList.contains('show')) {
       document.getElementById('btn-add-task').style.display = 'none';
       document.getElementById('nav-btn-show-form').style.display = 'inline';
     }
 
   }
 
-  static showForm() {
+  static showForm(triggerShow) {
 
-    if (!document.getElementById('input-card').classList.contains('show')) {
+    if (!document.getElementById('input-collapse').classList.contains('show')) {
+      if (triggerShow) {
+        $('#input-collapse').collapse('show');
+      }
       document.getElementById('btn-add-task').style.display = 'inline';
       document.getElementById('nav-btn-show-form').style.display = 'none';
     }

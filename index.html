@@ -27,7 +27,7 @@
       </a>
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-          <a href id="nav-btn-show-form" class="text-light" data-toggle="collapse" data-target="#input-card" aria-expanded="true" aria-controls="input-card" style="display: none;"><i class="fas fa-arrow-down fa-2x"></i></a>
+          <a href id="nav-btn-show-form" class="text-light" data-toggle="collapse" data-target="#input-collapse" aria-expanded="true" aria-controls="input-collapse" style="display: none;"><i class="fas fa-arrow-down fa-2x"></i></a>
         </li>
       </ul>
     </div>
@@ -36,8 +36,8 @@
   <div class="my-2"></div>
 
   <!-- input form card -->
-  <div id="input-card" class="collapse show">
-    <div class="container card bg-light">
+  <div id="input-collapse" class="collapse show">
+    <div id="input-card" class="container card bg-light">
       <div class="card-body">
 
         <form id="form-new" onsubmit="return false;" class="ml-auto my-0">
@@ -71,7 +71,7 @@
                 <button id="btn-add-task" class="btn btn-md-block btn-primary my-2 my-sm-0">Add Task</button>
               </div>
               <div class="col text-right">
-                <button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#input-card" aria-expanded="true" aria-controls="input-card">
+                <button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#input-collapse" aria-expanded="true" aria-controls="input-collapse">
                   <i id="collapse-icon" class="fas fa-arrow-up"></i>
                 </button>        
               </div>

@@ -234,7 +234,7 @@ setTimeout(() => {
 
 // Handle show/collapse of input-card
 $(document).ready(function() {
-  $('#input-card')
+  $('#input-collapse')
     .on('show.bs.collapse', function() {
       UI.showForm();
     })
