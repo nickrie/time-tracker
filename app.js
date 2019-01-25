@@ -11,11 +11,6 @@ for (let taskId in tasks.tasks.list) {
 // Show the Task List or Empty List depending on whether or not tasks exist
 UI.checkTaskListEmpty();
 
-// Attempt to detect mobile
-// Some tasks, like re-focusing inputs, do not make sense on mobile
-var nua = navigator.userAgent;
-var isMobile = nua.indexOf('Android ') > -1 || nua.indexOf('iPhone OS ') > -1;
-
 // Focus the New Task input
 if (!isMobile) {
   document.getElementById('input-task-name').focus();
