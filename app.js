@@ -72,16 +72,7 @@ document.querySelector('#task-list').addEventListener('click', e => {
     const taskId = UI.parentRowTaskId(e.target);
 
     // toggle the task
-    const toggleAction = toggleTask(taskId);
-    const elToggleIcon = document.querySelector(
-      `#col-task-toggle-icon-${taskId}`
-    );
-    // hide icon after they click
-    if (toggleAction == 'STOP') {
-      elToggleIcon.innerHTML = '<i class="fas fa-hand-paper"></i>';
-    } else {
-      elToggleIcon.innerHTML = '<i class="fas fa-rocket"></i>';
-    }
+    toggleTask(taskId);
 
     // Focus on the name input
     if (!isMobile) {
@@ -138,7 +129,7 @@ function addTask(name, hours, minutes) {
     // Clear the inputs
     UI.clearInputs();
     // Add task to UI (we must add before starting it since start updates the UI)
-    UI.displayTask(tasks.getTask(result.id), true);
+    UI.displayTask(tasks.getTask(result.id));
     // Start the new task
     startTask(result.id);
   } else {
@@ -204,7 +195,6 @@ function toggleTask(taskId) {
     UI.alert(result.error);
   }
 
-  return result.toggleAction;
 }
 
 // Start a task (make it active and start tracking time)

@@ -98,7 +98,7 @@ class UI {
   }
 
   // Displays a task
-  static displayTask(task, justAdded = false) {
+  static displayTask(task) {
     // create our new row
     const newRow = document.createElement('div');
     newRow.classList = 'row row-task p-2 border-top align-items-center';
@@ -117,14 +117,6 @@ class UI {
     const taskList = document.getElementById('task-list');
     const rowHeader = document.getElementById('row-header');
     taskList.insertBefore(newRow, rowHeader.nextElementSibling);
-
-    // add toggle icon
-    const elToggle = document.getElementById(`col-task-toggle-icon-${task.id}`);
-    elToggle.innerHTML = justAdded ? '<i class="fas fa-rocket"></i>' : '';
-    // After 1 second remove the toggle icon
-    setTimeout(() => {
-      document.querySelector(`#col-task-toggle-icon-${task.id}`).innerHTML = '';
-    }, 1000);
 
     // add Last Active divs
     //    The first div will be used for the long text,
@@ -334,6 +326,13 @@ class UI {
       document
         .getElementById(`row-task-${task.id}`)
         .classList.add('bg-success');
+      // Add the icon to indicate the task just started
+      const elToggle = document.getElementById(`col-task-toggle-icon-${task.id}`);
+      elToggle.innerHTML = '<i class="fas fa-rocket"></i>';
+      // After 1 second remove the toggle icon
+      setTimeout(() => {
+       document.querySelector(`#col-task-toggle-icon-${task.id}`).innerHTML = '';
+      }, 1000);
     }
 
     // if the task was stopped, indicate the change by setting the background color to red temporarily
