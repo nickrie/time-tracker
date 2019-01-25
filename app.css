@@ -18,8 +18,12 @@ footer {
   color: #18bc9c;
 }
 
-/* prevent having to double click on mobile to click buttons or start/stop a task */
-@media not (hover: none) {
+/* 
+  hover actions should not occur on touch devices
+  in order to prevent having to double click on mobile 
+  to click buttons or start/stop a task 
+*/
+@media (pointer: fine) {
   #task-list .row-task:hover {
     background-color: #eee;
   }
