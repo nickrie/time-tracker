@@ -183,13 +183,18 @@ class UI {
     const elName = document.querySelector('#input-task-name');
     const elRow = document.querySelector(`#row-task-${task.id}`);
 
-    // If the task is active we want to indicate it's being editing
-    // by changing the name column bg-color and add help text
+    // Change the background color of the task row being edited
+    elRow.classList.add('bg-primary');
+    elRow.classList.add('text-light');
+    // When the task is active we want to indicate it's being editing
+    // by changing the name column bg-color and add help text.
+    // Since the task can become active while editing, this should always be done.
+    const elColIcons = document.querySelector(`#col-task-name-${task.id}`);
+    elColIcons.classList.add('bg-primary');
+    elColIcons.classList.add('text-light');
+
+    // Add help text
     if (elRow.classList.contains('bg-success')) {
-      const elColIcons = document.querySelector(`#col-task-name-${task.id}`);
-      elColIcons.classList.add('bg-primary');
-      elColIcons.classList.add('text-light');
-      // Add help text
       const activeMinutes = UI.getActiveMinutes(task);
       if (activeMinutes > 0) {
         document.getElementById('edit-help').innerText =
@@ -197,10 +202,6 @@ class UI {
           UI.getTimeStr(activeMinutes) +
           '.';
       }
-    } else {
-      // Change the background color of the item being edited
-      elRow.classList.add('bg-primary');
-      elRow.classList.add('text-light');
     }
 
     // Change the color of the input card
@@ -242,18 +243,16 @@ class UI {
 
     if (elRow !== null) {
       // If the task is active remove name column bg-color and help text
-      if (elRow.classList.contains('bg-success')) {
-        const elColIcons = document.querySelector(`#col-task-name-${taskId}`);
-        elColIcons.classList.remove('bg-primary');
-        elColIcons.classList.remove('text-light');
-        document.getElementById('edit-help').innerText = '';
-      }
+      const elColIcons = document.querySelector(`#col-task-name-${taskId}`);
+      elColIcons.classList.remove('bg-primary');
+      elColIcons.classList.remove('text-light');
       // Revert row color changes
-      else {
-        elRow.classList.remove('bg-primary');
-        elRow.classList.remove('text-light');
-      }
+      elRow.classList.remove('bg-primary');
+      elRow.classList.remove('text-light');
     }
+
+    // Clear the help text
+    document.getElementById('edit-help').innerText = '';
 
     // Revert input card background color
     const elCard = document.querySelector('#input-card');
